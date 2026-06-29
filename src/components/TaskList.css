@@ -1,7 +1,7 @@
 .task-list-page {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px 20px;
   min-height: 100vh;
 }
 
@@ -9,56 +9,103 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid #ddd;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .task-header h1 {
-  font-size: 1.6rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.02em;
+}
+
+.user-badge {
+  font-size: 0.8rem;
+  background-color: #e0e7ff;
+  color: #4338ca;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-weight: 500;
 }
 
 .logout-btn {
-  padding: 0.4rem 0.9rem;
-  background-color: #e74c3c;
+  padding: 0.45rem 1rem;
+  background-color: #f87171;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
 }
 
 .logout-btn:hover {
-  background-color: #c0392b;
+  background-color: #ef4444;
 }
 
 .task-content {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.75rem;
 }
 
 .task-section {
-  background: #fff;
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .task-section h2 {
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
-  color: #444;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.count-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.pending-badge {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.done-badge {
+  background-color: #dcfce7;
+  color: #15803d;
 }
 
 .status-msg {
   text-align: center;
-  color: #888;
-  margin-top: 2rem;
+  color: #64748b;
+  margin-top: 3rem;
+  font-size: 1rem;
 }
 
 .empty-msg {
-  color: #aaa;
+  color: #94a3b8;
   font-size: 0.9rem;
-  padding: 0.25rem 0;
+  padding: 0.5rem 0;
+  font-style: italic;
 }

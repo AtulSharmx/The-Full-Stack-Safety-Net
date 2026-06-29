@@ -1,34 +1,17 @@
 import { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
 import "./AddTaskForm.css";
 
-function AddTaskForm({ currentUser, onTaskAdded }) {
+function AddTaskForm({ onAddTask }) {
   const [text, setText] = useState("");
   const [dueDate, setDueDate] = useState("");
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
     if (!text.trim()) return;
 
-    const taskText = text.trim();
-    const taskDate = dueDate;
-
-    // Clear form instantly - 0 millisecond delay for user
+    onAddTask(text.trim(), dueDate);
     setText("");
     setDueDate("");
-
-    try {
-      await addDoc(collection(db, "tasks"), {
-        text: taskText,
-        dueDate: taskDate,
-        completed: false,
-        userId: currentUser.uid,
-      });
-      onTaskAdded();
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   return (
