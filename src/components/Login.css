@@ -51,6 +51,27 @@
   font-size: 0.875rem;
 }
 
+.success-msg {
+  color: #27ae60;
+  font-size: 0.875rem;
+}
+
+.forgot-wrapper {
+  text-align: right;
+  margin-top: -0.25rem;
+}
+
+.forgot-link {
+  font-size: 0.825rem;
+  color: #4a90e2;
+  cursor: pointer;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+
 .switch-link {
   text-align: center;
   margin-top: 1rem;

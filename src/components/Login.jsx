@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import "./Login.css";
 
@@ -9,10 +9,12 @@ function Login({ onSwitch }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   async function handleLogin(e) {
     e.preventDefault();
     setError("");
+    setMessage("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
@@ -22,10 +24,27 @@ function Login({ onSwitch }) {
 
   async function handleGoogleLogin() {
     setError("");
+    setMessage("");
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (err) {
       setError("Google sign-in failed. Please try again.");
+    }
+  }
+
+  async function handleForgotPassword() {
+    if (!email.trim()) {
+      setError("Please enter your email address first.");
+      setMessage("");
+      return;
+    }
+    setError("");
+    setMessage("");
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      setMessage("Password reset email sent! Check your inbox.");
+    } catch (err) {
+      setError("Could not send reset email. Please verify your email.");
     }
   }
 
@@ -47,7 +66,13 @@ function Login({ onSwitch }) {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        <div className="forgot-wrapper">
+          <span className="forgot-link" onClick={handleForgotPassword}>
+            Forgot Password?
+          </span>
+        </div>
         {error && <p className="error-msg">{error}</p>}
+        {message && <p className="success-msg">{message}</p>}
         <button type="submit">Log In</button>
       </form>
       <div className="divider"><span>or</span></div>
