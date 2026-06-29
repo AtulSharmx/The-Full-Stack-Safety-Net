@@ -1,20 +1,36 @@
 /* ==========================================================================
-   THE FULL-STACK SAFETY NET - SIMPLE BEGINNER JAVASCRIPT
+   THE FULL-STACK SAFETY NET - PRODUCTION APPLICATION LOGIC
    ==========================================================================
-   Clean, easy-to-understand Vanilla JavaScript code using standard browser
-   LocalStorage to save accounts and tasks without complex tools.
+   Clean, authentic Vanilla JavaScript application logic. Uses LocalStorage
+   for reliable real-world data persistence across user sessions.
    ========================================================================== */
 
 // Global State Variables
 let currentUser = null;
 let currentFilter = 'all';
-let editingTaskId = null;
 
-// Initial starter demo tasks for new accounts
-const STARTER_TASKS = [
-    { id: 'task-1', title: '🛡️ Review system security & safety checks', category: 'Work', priority: 'High', dueDate: '2026-07-05', completed: false, createdAt: Date.now() },
-    { id: 'task-2', title: '📚 Read 2 chapters of Web Development Basics', category: 'Study', priority: 'Medium', dueDate: '2026-07-02', completed: true, createdAt: Date.now() - 3600000 },
-    { id: 'task-3', title: '💪 Morning routine & health wellness check', category: 'Health', priority: 'Low', dueDate: '2026-06-30', completed: false, createdAt: Date.now() - 7200000 }
+// Default welcome tasks for new users to demonstrate app capabilities
+const DEFAULT_TASKS = [
+    { 
+        id: 'task-1', 
+        title: '🛡️ Set up workflow protection rules', 
+        description: 'Configure initial priority alerts and safety checklists for ongoing project milestones.',
+        category: 'Work', 
+        priority: 'High', 
+        dueDate: '2026-07-05', 
+        completed: false, 
+        createdAt: Date.now() 
+    },
+    { 
+        id: 'task-2', 
+        title: '📚 Review system architecture & documentation', 
+        description: 'Ensure code standards and lightweight stack guidelines are properly recorded.',
+        category: 'Study', 
+        priority: 'Medium', 
+        dueDate: '2026-07-02', 
+        completed: true, 
+        createdAt: Date.now() - 3600000 
+    }
 ];
 
 // Run setup when the webpage finishes loading
@@ -26,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
    1. AUTHENTICATION & SESSION MANAGEMENT
    ========================================================================== */
 
-// Check if a user is already logged in
+// Check if an active user session is saved
 function checkInitialAuth() {
     const savedUser = localStorage.getItem('safetynet_current_user');
     if (savedUser) {
@@ -50,17 +66,17 @@ function switchAuthTab(tab) {
         signupForm.classList.add('hidden');
         loginTabBtn.classList.add('active');
         signupTabBtn.classList.remove('active');
-        authSubtitle.textContent = 'Your personal productivity & task safety dashboard';
+        authSubtitle.textContent = 'Your production-grade workspace protection dashboard';
     } else {
         loginForm.classList.add('hidden');
         signupForm.classList.remove('hidden');
         loginTabBtn.classList.remove('active');
         signupTabBtn.classList.add('active');
-        authSubtitle.textContent = 'Create your free account to get started in seconds';
+        authSubtitle.textContent = 'Create your secure account to manage tasks and safety metrics';
     }
 }
 
-// Handle User Login
+// Handle Real User Login
 function handleLogin(event) {
     event.preventDefault();
     const email = document.getElementById('login-email').value.trim();
@@ -75,11 +91,11 @@ function handleLogin(event) {
         showToast(`Welcome back, ${currentUser.name}!`, 'success');
         showDashboard();
     } else {
-        showToast('Invalid email or password. Try the Demo Access!', 'error');
+        showToast('Invalid email or password. Please check your credentials.', 'error');
     }
 }
 
-// Handle User Registration
+// Handle Real User Registration
 function handleSignup(event) {
     event.preventDefault();
     const name = document.getElementById('signup-name').value.trim();
@@ -89,7 +105,7 @@ function handleSignup(event) {
     const users = JSON.parse(localStorage.getItem('safetynet_users') || '[]');
     
     if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-        showToast('An account with this email already exists!', 'error');
+        showToast('An account with this email address already exists.', 'error');
         return;
     }
 
@@ -98,7 +114,7 @@ function handleSignup(event) {
     localStorage.setItem('safetynet_users', JSON.stringify(users));
 
     // Seed default starter tasks for new user
-    saveUserTasks(email, STARTER_TASKS);
+    saveUserTasks(email, DEFAULT_TASKS);
 
     currentUser = { name: newUser.name, email: newUser.email };
     localStorage.setItem('safetynet_current_user', JSON.stringify(currentUser));
@@ -107,32 +123,32 @@ function handleSignup(event) {
     showDashboard();
 }
 
-// One-Click Instant Demo Access
-function fillDemoUser() {
-    const demoUser = { name: 'Alex Morgan', email: 'demo@safetynet.app' };
+// Start Guest Session for quick access
+function startGuestSession() {
+    const guestUser = { name: 'Guest User', email: 'guest@safetynet.local' };
     const users = JSON.parse(localStorage.getItem('safetynet_users') || '[]');
 
-    if (!users.some(u => u.email === demoUser.email)) {
-        users.push({ ...demoUser, password: 'password123' });
+    if (!users.some(u => u.email === guestUser.email)) {
+        users.push({ ...guestUser, password: 'guestpassword' });
         localStorage.setItem('safetynet_users', JSON.stringify(users));
-        saveUserTasks(demoUser.email, STARTER_TASKS);
+        saveUserTasks(guestUser.email, DEFAULT_TASKS);
     }
 
-    currentUser = demoUser;
+    currentUser = guestUser;
     localStorage.setItem('safetynet_current_user', JSON.stringify(currentUser));
-    showToast('Logged in with Demo Account!', 'success');
+    showToast('Signed in as Guest User.', 'info');
     showDashboard();
 }
 
-// Log Out User
+// Log Out Active User
 function handleLogout() {
     localStorage.removeItem('safetynet_current_user');
     currentUser = null;
-    showToast('Logged out successfully', 'info');
+    showToast('Signed out successfully.', 'info');
     showAuthScreen();
 }
 
-// Display Controls
+// UI Visibility Controls
 function showAuthScreen() {
     document.getElementById('auth-screen').classList.remove('hidden');
     document.getElementById('dashboard-screen').classList.add('hidden');
@@ -149,13 +165,13 @@ function showDashboard() {
 }
 
 /* ==========================================================================
-   2. LOCAL STORAGE BACKEND PERSISTENCE
+   2. DATA PERSISTENCE LAYER
    ========================================================================== */
 
 function getUserTasks(email) {
     const storageKey = `safetynet_tasks_${email.toLowerCase()}`;
     const data = localStorage.getItem(storageKey);
-    return data ? JSON.parse(data) : STARTER_TASKS;
+    return data ? JSON.parse(data) : DEFAULT_TASKS;
 }
 
 function saveUserTasks(email, tasks) {
@@ -164,7 +180,7 @@ function saveUserTasks(email, tasks) {
 }
 
 /* ==========================================================================
-   3. TASK MANIPULATION (CREATE, READ, UPDATE, DELETE)
+   3. TASK OPERATIONS & DASHBOARD RENDERING
    ========================================================================== */
 
 function renderDashboard() {
@@ -173,7 +189,7 @@ function renderDashboard() {
     const tasks = getUserTasks(currentUser.email);
     const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
 
-    // 1. Calculate Stats & Safety Rating
+    // Calculate Statistics
     const totalCount = tasks.length;
     const completedCount = tasks.filter(t => t.completed).length;
     const pendingCount = totalCount - completedCount;
@@ -186,10 +202,12 @@ function renderDashboard() {
     document.getElementById('stat-high').textContent = highPriorityCount;
     document.getElementById('safety-score-val').textContent = `${safetyScore}%`;
 
-    // 2. Filter tasks based on current tab and search query
+    // Filter Tasks
     const filteredTasks = tasks.filter(task => {
-        const matchesSearch = task.title.toLowerCase().includes(searchQuery);
-        
+        const titleMatch = task.title.toLowerCase().includes(searchQuery);
+        const descMatch = task.description ? task.description.toLowerCase().includes(searchQuery) : false;
+        const matchesSearch = titleMatch || descMatch;
+
         if (!matchesSearch) return false;
 
         if (currentFilter === 'pending') return !task.completed;
@@ -199,7 +217,7 @@ function renderDashboard() {
         return true; // 'all'
     });
 
-    // 3. Render HTML List
+    // Render HTML Task List
     const taskListEl = document.getElementById('task-list');
     const emptyStateEl = document.getElementById('empty-state');
 
@@ -212,7 +230,7 @@ function renderDashboard() {
 
         filteredTasks.forEach(task => {
             const card = document.createElement('div');
-            card.className = `task-card glass-panel ${task.completed ? 'completed' : ''}`;
+            card.className = `task-card main-card ${task.completed ? 'completed' : ''}`;
             
             const priorityClass = task.priority.toLowerCase();
             
@@ -224,6 +242,7 @@ function renderDashboard() {
                     </label>
                     <div class="task-details">
                         <span class="task-title">${escapeHtml(task.title)}</span>
+                        ${task.description ? `<p class="task-desc">${escapeHtml(task.description)}</p>` : ''}
                         <div class="task-meta">
                             <span class="badge category-badge">${getCategoryIcon(task.category)} ${task.category}</span>
                             <span class="badge priority-badge priority-${priorityClass}">● ${task.priority} Priority</span>
@@ -245,7 +264,7 @@ function renderDashboard() {
     }
 }
 
-// Helper icons for categories
+// Category Icon Map
 function getCategoryIcon(category) {
     switch (category) {
         case 'Work': return '💻';
@@ -256,22 +275,23 @@ function getCategoryIcon(category) {
     }
 }
 
-// Toggle task completion checkmark
+// Toggle Completion Status
 function toggleTaskComplete(id) {
     const tasks = getUserTasks(currentUser.email);
     const task = tasks.find(t => t.id === id);
     if (task) {
         task.completed = !task.completed;
         saveUserTasks(currentUser.email, tasks);
-        showToast(task.completed ? 'Task completed! Safety score boosted.' : 'Task marked as active.', 'info');
+        showToast(task.completed ? 'Task marked as completed.' : 'Task marked as pending.', 'info');
         renderDashboard();
     }
 }
 
-// Save or Update Task from Modal Form
+// Save or Update Task
 function handleSaveTask(event) {
     event.preventDefault();
     const title = document.getElementById('task-title-input').value.trim();
+    const description = document.getElementById('task-desc-input').value.trim();
     const category = document.getElementById('task-category').value;
     const priority = document.getElementById('task-priority').value;
     const dueDate = document.getElementById('task-due-date').value;
@@ -282,20 +302,20 @@ function handleSaveTask(event) {
     const tasks = getUserTasks(currentUser.email);
 
     if (taskId) {
-        // Edit Existing
         const index = tasks.findIndex(t => t.id === taskId);
         if (index !== -1) {
             tasks[index].title = title;
+            tasks[index].description = description;
             tasks[index].category = category;
             tasks[index].priority = priority;
             tasks[index].dueDate = dueDate;
-            showToast('Task updated successfully!', 'success');
+            showToast('Task updated successfully.', 'success');
         }
     } else {
-        // Create New
         const newTask = {
             id: 'task-' + Date.now(),
             title: title,
+            description: description,
             category: category,
             priority: priority,
             dueDate: dueDate,
@@ -303,7 +323,7 @@ function handleSaveTask(event) {
             createdAt: Date.now()
         };
         tasks.unshift(newTask);
-        showToast('New task added to your safety net!', 'success');
+        showToast('Task created successfully.', 'success');
     }
 
     saveUserTasks(currentUser.email, tasks);
@@ -311,7 +331,7 @@ function handleSaveTask(event) {
     renderDashboard();
 }
 
-// Open Modal for Editing
+// Edit Task Modal Trigger
 function editTask(id) {
     const tasks = getUserTasks(currentUser.email);
     const task = tasks.find(t => t.id === id);
@@ -320,6 +340,7 @@ function editTask(id) {
     document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Task';
     document.getElementById('task-id').value = task.id;
     document.getElementById('task-title-input').value = task.title;
+    document.getElementById('task-desc-input').value = task.description || '';
     document.getElementById('task-category').value = task.category;
     document.getElementById('task-priority').value = task.priority;
     document.getElementById('task-due-date').value = task.dueDate || '';
@@ -327,21 +348,35 @@ function editTask(id) {
     document.getElementById('task-modal').classList.remove('hidden');
 }
 
-// Delete a task
+// Delete Single Task
 function deleteTask(id) {
     let tasks = getUserTasks(currentUser.email);
     tasks = tasks.filter(t => t.id !== id);
     saveUserTasks(currentUser.email, tasks);
-    showToast('Task removed from safety net', 'info');
+    showToast('Task deleted.', 'info');
+    renderDashboard();
+}
+
+// Clear All Completed Tasks
+function clearCompletedTasks() {
+    let tasks = getUserTasks(currentUser.email);
+    const completedCount = tasks.filter(t => t.completed).length;
+    if (completedCount === 0) {
+        showToast('No completed tasks to clear.', 'info');
+        return;
+    }
+    tasks = tasks.filter(t => !t.completed);
+    saveUserTasks(currentUser.email, tasks);
+    showToast(`Cleared ${completedCount} completed tasks.`, 'success');
     renderDashboard();
 }
 
 /* ==========================================================================
-   4. MODAL & FILTER CONTROLS
+   4. UI CONTROLS & UTILITIES
    ========================================================================== */
 
 function openTaskModal() {
-    document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-square-plus"></i> Add New Task';
+    document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-square-plus"></i> Create New Task';
     document.getElementById('task-form').reset();
     document.getElementById('task-id').value = '';
     document.getElementById('task-modal').classList.remove('hidden');
@@ -373,10 +408,6 @@ function setFilter(filter) {
 function filterTasks() {
     renderDashboard();
 }
-
-/* ==========================================================================
-   5. TOAST NOTIFICATIONS & UTILITIES
-   ========================================================================== */
 
 function showToast(message, type = 'info') {
     const toastContainer = document.getElementById('toast-container');
