@@ -25,7 +25,7 @@ function Signup({ onSwitch }) {
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (err) {
-      setError("Google sign-in failed. Please try again.");
+      setError(err.message || "Google sign-in failed.");
     }
   }
 

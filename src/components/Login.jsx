@@ -28,7 +28,7 @@ function Login({ onSwitch }) {
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (err) {
-      setError("Google sign-in failed. Please try again.");
+      setError(err.message || "Google sign-in failed.");
     }
   }
 
@@ -44,7 +44,7 @@ function Login({ onSwitch }) {
       await sendPasswordResetEmail(auth, email.trim());
       setMessage("Password reset email sent! Check your inbox.");
     } catch (err) {
-      setError("Could not send reset email. Please verify your email.");
+      setError(err.message || "Could not send reset email.");
     }
   }
 
