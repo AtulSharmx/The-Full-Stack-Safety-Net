@@ -1,6 +1,6 @@
 # Task Manager
 
-Live Demo: https://the-full-stack-safety-net-ohwp.vercel.app/
+Live Demo: https://full-stack-safety-net.vercel.app/
 
 ## Screenshots
 
