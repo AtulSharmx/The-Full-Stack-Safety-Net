@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import "./Login.css";
+
+const googleProvider = new GoogleAuthProvider();
 
 function Login({ onSwitch }) {
   const [email, setEmail] = useState("");
@@ -15,6 +17,15 @@ function Login({ onSwitch }) {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
       setError("Invalid email or password.");
+    }
+  }
+
+  async function handleGoogleLogin() {
+    setError("");
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err) {
+      setError("Google sign-in failed. Please try again.");
     }
   }
 
@@ -39,6 +50,11 @@ function Login({ onSwitch }) {
         {error && <p className="error-msg">{error}</p>}
         <button type="submit">Log In</button>
       </form>
+      <div className="divider"><span>or</span></div>
+      <button className="google-btn" onClick={handleGoogleLogin}>
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+        Continue with Google
+      </button>
       <p className="switch-link">
         Don't have an account?{" "}
         <span onClick={onSwitch}>Sign up</span>
