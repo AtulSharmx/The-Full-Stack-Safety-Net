@@ -1,49 +1,33 @@
-# Task Manager
+# The Full-Stack Safety Net 🛡️
 
-Live Demo: https://full-stack-safety-net.vercel.app/
+A sleek, modern, beginner-friendly task management and productivity safety dashboard built purely with **HTML5**, **Vanilla CSS3**, and **Vanilla JavaScript**.
 
-## Screenshots
+## 🌟 Overview
 
-![Screenshot 1](screenshot1.png)
-![Screenshot 2](screenshot2.png)
-![Screenshot 3](screenshot3.png)
+**The Full-Stack Safety Net** is redesigned to eliminate complex framework overhead, heavy build tools, and complicated backend dependencies. It provides a full web app experience running directly in any browser using standard core web fundamentals.
 
-## About This Project
+### Key Features
+- **🛡️ Safety Score Dashboard**: Dynamic real-time calculation of your task completion rate and safety metrics.
+- **🔐 User Authentication**: Built-in account creation, sign in, and instant one-click demo access.
+- **💾 Local Storage Backend**: Data persistence built right into the browser (`localStorage`) for multi-user support without external servers.
+- **✨ Glassmorphism UI Design**: Deep modern dark theme, smooth gradient cards, responsive layout, and interactive state badges.
+- **⚡ Task CRUD & Live Filtering**: Create, edit, delete, mark completed, search by keywords, and filter by priority levels.
 
-A task manager web app where users can sign up, log in, and manage their own to-do list. Each user only sees their own tasks. You can add tasks with a due date, mark them as complete, and delete them. Tasks are split into "Pending" and "Completed" sections.
+---
 
-Built as a portfolio project to practice connecting a React frontend to a real backend (Firebase) with actual authentication and a database.
+## 🛠️ Tech Stack & Architecture
 
-## Tech Stack
+This repository is strictly maintained with 3 core web stack files:
 
-- React 18 (with Vite)
-- Firebase Authentication (Email/Password)
-- Firebase Firestore (database)
-- Plain CSS (no framework)
+- **`index.html`**: Semantic document structure, modals, and accessible markup.
+- **`style.css`**: Design system with CSS variables, flexbox/grid layouts, glassmorphism aesthetics, and animations.
+- **`app.js`**: Beginner-friendly, easy-to-read DOM manipulation, event routing, and storage handling.
 
-## Features
+---
 
-- Email and password sign up / log in
-- Each user's tasks are private — stored in Firestore with their user ID
-- Add tasks with a title and optional due date
-- Mark tasks complete / incomplete with a checkbox
-- Delete tasks
-- Pending and Completed sections update after every action
-- Logs out with a single button click
+## 🚀 How to Run
 
-## Challenges / What I Learned
+No `npm install` or build commands required! Simply:
 
-**Connecting Firebase Auth for the first time** — I hadn't used Firebase before this project. Getting `onAuthStateChanged` to correctly track the logged-in user across page refreshes took some debugging. I learned how important it is to show a loading state while that initial auth check runs, otherwise the app flashes the login screen briefly even when a user is already signed in.
-
-**Structuring Firestore so each user only sees their own tasks** — I had to figure out how to store the `userId` field on every task document and then query with `where("userId", "==", currentUser.uid)`. Without the matching security rules in the Firebase console, the query filtering alone wouldn't actually protect the data.
-
-**Handling loading and error states for async calls** — Firebase calls are asynchronous, and early on I forgot to handle the loading state, which caused the UI to briefly render an empty list before data arrived. I added `isLoading` state and show "Loading tasks..." until the fetch is done.
-
-## Run Locally
-
-1. Clone the repo
-2. Run `npm install`
-3. Copy `.env.example` to `.env` and paste your own Firebase project config values
-4. Run `npm run dev`
-
-> You'll also need to set up your own Firebase project: enable Email/Password authentication under **Authentication → Sign-in method**, create a **Firestore database**, and set up security rules in the Firestore **Rules** tab.
+1. Clone or download this repository.
+2. Double-click `index.html` or open it in any web browser.
