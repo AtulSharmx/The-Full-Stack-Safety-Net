@@ -10,18 +10,23 @@ function TaskList({ currentUser }) {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  async function loadTasks() {
-    setIsLoading(true);
+  async function loadTasks(showLoading = false) {
+    if (showLoading) setIsLoading(true);
     // Only fetch tasks that belong to the currently logged-in user
     const q = query(collection(db, "tasks"), where("userId", "==", currentUser.uid));
-    const snapshot = await getDocs(q);
-    const taskData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    setTasks(taskData);
-    setIsLoading(false);
+    try {
+      const snapshot = await getDocs(q);
+      const taskData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setTasks(taskData);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
-    loadTasks();
+    loadTasks(true);
   }, []);
 
   async function handleLogout() {

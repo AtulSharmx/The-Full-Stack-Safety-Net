@@ -4,15 +4,23 @@ import "./TaskItem.css";
 
 function TaskItem({ task, onRefresh }) {
   async function handleToggle() {
-    const taskRef = doc(db, "tasks", task.id);
-    await updateDoc(taskRef, { completed: !task.completed });
-    onRefresh();
+    try {
+      const taskRef = doc(db, "tasks", task.id);
+      await updateDoc(taskRef, { completed: !task.completed });
+      onRefresh();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async function handleDelete() {
-    const taskRef = doc(db, "tasks", task.id);
-    await deleteDoc(taskRef);
-    onRefresh();
+    try {
+      const taskRef = doc(db, "tasks", task.id);
+      await deleteDoc(taskRef);
+      onRefresh();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
