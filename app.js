@@ -230,7 +230,8 @@ function renderDashboard() {
 
         filteredTasks.forEach(task => {
             const card = document.createElement('div');
-            card.className = `task-card main-card ${task.completed ? 'completed' : ''}`;
+            // Apply CSS classes to the card div ("card" is our white box style)
+            card.className = `task-card card ${task.completed ? 'completed' : ''}`;
             
             const priorityClass = task.priority.toLowerCase();
             

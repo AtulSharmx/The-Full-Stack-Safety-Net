@@ -1,851 +1,1039 @@
 /* ==========================================================================
-   THE FULL-STACK SAFETY NET - CRISP WHITE LIGHT DESIGN SYSTEM
-   ========================================================================== 
-   Built with pure Vanilla CSS3. Clean light theme with soft cards, high legibility,
-   layered subtle shadows, responsive layout, and modern micro-interactions.
+   THE FULL-STACK SAFETY NET - SIMPLE & CLEAN STYLE
+   ==========================================================================
+   This file styles the whole app.
+   We use CSS "Custom Properties" (also called variables) to store colors
+   and sizes at the top, so we only need to change them in one place.
    ========================================================================== */
 
-/* --- CSS Custom Variables (Light Theme Tokens) --- */
+
+/* ----------------------------------------
+   STEP 1: Define our color palette and sizes
+   These are like "named values" we can reuse anywhere below.
+   ---------------------------------------- */
 :root {
-    /* Color Palette - Modern Crisp Light Theme */
-    --bg-main: #f8fafc;
-    --bg-card: #ffffff;
-    --bg-card-hover: #f1f5f9;
-    --bg-subtle: #f8fafc;
-    --border-color: #e2e8f0;
-    --border-hover: #cbd5e1;
-    --border-focus: #6366f1;
+    /* --- Background Colors --- */
+    --bg-page:   #f0f9f4;   /* very light green - the page background */
+    --bg-card:   #ffffff;   /* pure white - for cards / panels */
+    --bg-subtle: #f6fbf8;   /* slightly green tinted - hover backgrounds */
 
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
+    /* --- Border Colors --- */
+    --border:       #c8e6d4;   /* soft green border */
+    --border-focus: #26a069;   /* darker green when an input is clicked */
 
-    /* Primary Accent & Gradients */
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-    --banner-gradient: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+    /* --- Text Colors --- */
+    --text-dark:   #1a3a2a;   /* very dark green - main headings */
+    --text-body:   #3d6b52;   /* medium green - paragraph text */
+    --text-muted:  #7aab90;   /* light green - small labels / hints */
 
-    /* Priority & Status Colors */
-    --priority-high: #ef4444;
-    --priority-medium: #d97706;
-    --priority-low: #059669;
+    /* --- Brand Color (buttons, active states) --- */
+    --brand:       #22c55e;   /* bright green */
+    --brand-dark:  #16a34a;   /* darker green for hover */
+    --brand-light: #dcfce7;   /* very light green background tint */
 
-    /* Geometry & Shadows */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 18px;
-    --radius-full: 9999px;
+    /* --- Status Colors --- */
+    --red:    #ef4444;   /* for High priority / errors */
+    --yellow: #f59e0b;   /* for Medium priority */
+    --green:  #22c55e;   /* for Low priority / success */
 
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
-    --shadow-lg: 0 12px 30px -4px rgba(15, 23, 42, 0.1);
+    /* --- Rounded Corners --- */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;  /* makes pill / circle shapes */
 
-    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    /* --- Shadow (drop shadow behind cards) --- */
+    --shadow: 0 2px 10px rgba(34, 197, 94, 0.08);
+    --shadow-hover: 0 6px 20px rgba(34, 197, 94, 0.14);
+
+    /* --- How fast animations play --- */
+    --speed: 0.18s ease;
 }
 
-/* --- Global Reset & Base Styles --- */
+
+/* ----------------------------------------
+   STEP 2: Global Reset
+   Remove browser default margin and padding
+   so every browser looks the same.
+   ---------------------------------------- */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* padding/border won't grow element outside its width */
 }
 
+
+/* ----------------------------------------
+   STEP 3: Base Body Styles
+   The outermost container for the whole page.
+   ---------------------------------------- */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--bg-main);
-    background-image: 
-        radial-gradient(at 10% 10%, rgba(79, 70, 229, 0.05) 0px, transparent 40%),
-        radial-gradient(at 90% 90%, rgba(124, 58, 237, 0.05) 0px, transparent 40%);
-    background-attachment: fixed;
-    color: var(--text-primary);
-    min-height: 100vh;
+    background-color: var(--bg-page);
+    color: var(--text-body);
+    min-height: 100vh;   /* at least full screen height */
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: center;   /* center content horizontally */
+    align-items: flex-start;   /* start from top */
+    line-height: 1.6;
 }
 
-h1, h2, h3, h4, .brand-name, .user-name, .stat-value, .safety-score-val {
+/* Use 'Outfit' font for all headings */
+h1, h2, h3, h4 {
     font-family: 'Outfit', sans-serif;
+    color: var(--text-dark);
 }
 
-/* --- Main Card Utility --- */
-.main-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-md);
-    border-radius: var(--radius-lg);
-}
 
+/* ----------------------------------------
+   STEP 4: Utility Classes
+   Short helper classes used throughout HTML.
+   ---------------------------------------- */
+
+/* Hide any element instantly */
 .hidden {
     display: none !important;
 }
 
-/* --- App Container --- */
-.app-container {
-    width: 100%;
-    max-width: 1050px;
-    padding: 28px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+/* White card box with border and shadow */
+.card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
 }
 
-/* --- Buttons --- */
+/* Main wrapper that limits width and centers content */
+.app-container {
+    width: 100%;
+    max-width: 900px;
+    padding: 32px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;   /* space between each section */
+}
+
+
+/* ----------------------------------------
+   STEP 5: Button Styles
+   Buttons are used everywhere. We have a
+   base style + color variations.
+   ---------------------------------------- */
+
+/* Base button style — shared by all buttons */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 11px 20px;
-    font-size: 0.95rem;
+    gap: 7px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
     font-weight: 600;
+    font-family: 'Inter', sans-serif;
     border-radius: var(--radius-md);
     border: none;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all var(--speed);
     text-decoration: none;
+    white-space: nowrap;
 }
 
+/* Green filled button — main action */
 .btn-primary {
-    background: var(--primary-gradient);
+    background-color: var(--brand);
     color: #ffffff;
-    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
 }
-
 .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+    background-color: var(--brand-dark);
+    transform: translateY(-1px);   /* tiny lift effect on hover */
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
+/* Light button — secondary action */
 .btn-secondary {
-    background: #f1f5f9;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
+    background-color: var(--bg-subtle);
+    color: var(--text-body);
+    border: 1.5px solid var(--border);
 }
-
 .btn-secondary:hover {
-    background: #e2e8f0;
-    color: var(--text-primary);
+    background-color: var(--brand-light);
+    border-color: var(--brand);
+    color: var(--brand-dark);
 }
 
+/* Outline button — soft action (e.g. Clear Done) */
 .btn-outline {
-    background: transparent;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
 }
-
 .btn-outline:hover {
-    background: #f1f5f9;
-    color: var(--priority-high);
+    background-color: #fef2f2;
+    color: var(--red);
     border-color: #fca5a5;
 }
 
+/* Make a button stretch to full width */
 .btn-block {
     width: 100%;
 }
 
+/* Small square icon button (logout button in navbar) */
 .btn-icon {
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    width: 40px;
-    height: 40px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    width: 38px;
+    height: 38px;
     border-radius: var(--radius-md);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all var(--speed);
+    font-size: 0.95rem;
 }
-
 .btn-icon:hover {
-    background: #f8fafc;
-    color: var(--primary);
-    border-color: var(--border-focus);
+    color: var(--red);
+    border-color: #fca5a5;
+    background: #fef2f2;
 }
 
-/* ==========================================================================
-   AUTHENTICATION SCREEN STYLES
-   ========================================================================== */
+
+/* ----------------------------------------
+   STEP 6: Input / Form Styles
+   Inputs, selects, textareas all look the same.
+   ---------------------------------------- */
+
+/* Wrapper for label + input together */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* The label text above each input */
+.input-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-body);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* The actual input box, dropdown, or textarea */
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 11px 14px;
+    background: var(--bg-subtle);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color var(--speed), box-shadow var(--speed);
+}
+
+/* When the user clicks an input, highlight it */
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+    background: #ffffff;
+}
+
+
+/* ----------------------------------------
+   STEP 7: Auth / Login Screen
+   The screen shown before a user logs in.
+   ---------------------------------------- */
+
+/* Full-screen centered wrapper */
 .auth-screen {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 80vh;
+    min-height: 88vh;
     width: 100%;
 }
 
+/* The white login box */
 .auth-card {
     width: 100%;
-    max-width: 440px;
-    padding: 40px 32px;
+    max-width: 420px;
+    padding: 36px 30px;
 }
 
+/* Top section: logo + title */
 .auth-header {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 26px;
 }
 
+/* App logo: icon + name */
 .brand-logo {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.6rem;
+    gap: 8px;
+    font-size: 1.5rem;
     font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 12px;
+    color: var(--text-dark);
+    font-family: 'Outfit', sans-serif;
+    margin-bottom: 10px;
 }
-
 .brand-logo i {
-    color: var(--primary);
+    color: var(--brand);
 }
 
 .auth-header h2 {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
-
 .auth-header p {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-size: 0.88rem;
 }
 
+/* The Sign In / Create Account tab row */
 .auth-tabs {
     display: flex;
-    background: #f1f5f9;
+    background: var(--bg-subtle);
     padding: 4px;
     border-radius: var(--radius-md);
-    margin-bottom: 24px;
+    margin-bottom: 22px;
+    border: 1.5px solid var(--border);
 }
 
 .tab-btn {
     flex: 1;
-    padding: 10px;
-    font-size: 0.9rem;
+    padding: 9px;
+    font-size: 0.88rem;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--text-muted);
     background: transparent;
     border: none;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: var(--transition);
+    transition: all var(--speed);
+    font-family: inherit;
 }
 
+/* The active (selected) tab */
 .tab-btn.active {
-    background: #ffffff;
-    color: var(--text-primary);
-    box-shadow: var(--shadow-sm);
+    background: var(--bg-card);
+    color: var(--brand-dark);
+    box-shadow: 0 1px 4px rgba(34, 197, 94, 0.15);
 }
 
+/* The form area inside the auth card */
 .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* The "OR" divider between Sign In and Continue as Guest */
+.divider {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    gap: 10px;
+}
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+
+/* ----------------------------------------
+   STEP 8: Dashboard Screen
+   The main app screen after logging in.
+   ---------------------------------------- */
+
+/* Outer wrapper for the entire dashboard */
+.dashboard-screen {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
 
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
 
-.input-group label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.input-group input, .input-group select, .input-group textarea {
-    width: 100%;
-    padding: 12px 16px;
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    font-family: inherit;
-    outline: none;
-    transition: var(--transition);
-}
-
-.input-group input:focus, .input-group select:focus, .input-group textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-}
-
-.divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    margin: 4px 0;
-}
-
-.divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.divider span {
-    padding: 0 10px;
-}
-
-/* ==========================================================================
-   DASHBOARD SCREEN STYLES
-   ========================================================================== */
-.dashboard-screen {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-/* Navbar */
+/* --- 8a: Navbar (top bar) --- */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 28px;
+    padding: 14px 24px;
 }
 
 .nav-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 1.4rem;
+    gap: 10px;
+    font-size: 1.25rem;
     font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-dark);
 }
-
 .brand-icon {
-    color: var(--primary);
-    font-size: 1.6rem;
+    color: var(--brand);
+    font-size: 1.4rem;
 }
 
+/* Right side of navbar: avatar + username + logout */
 .user-profile {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
 }
-
 .user-info {
     display: flex;
     flex-direction: column;
     text-align: right;
 }
-
 .user-greeting {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
 }
-
 .user-name {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     font-weight: 700;
+    color: var(--text-dark);
 }
 
+/* The circular avatar with user's initial */
 .avatar {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: var(--radius-full);
-    background: var(--primary-gradient);
-    color: #ffffff;
+    background: var(--brand);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 1.1rem;
-    box-shadow: 0 2px 10px rgba(79, 70, 229, 0.25);
+    font-size: 1rem;
+    font-family: 'Outfit', sans-serif;
 }
 
-/* Hero Safety Banner */
+
+/* --- 8b: Safety Status Banner --- */
 .safety-banner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 36px;
-    background: var(--banner-gradient);
-    border: 1px solid #c7d2fe;
+    padding: 24px 28px;
+    background: var(--brand-light);
+    border: 1.5px solid #bbf7d0;   /* light green border */
+    gap: 20px;
 }
 
+/* Small pill at the top of the banner */
 .shield-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     background: #ffffff;
-    color: var(--primary);
-    border: 1px solid #c7d2fe;
-    padding: 4px 14px;
+    color: var(--brand-dark);
+    border: 1.5px solid #bbf7d0;
+    padding: 3px 12px;
     border-radius: var(--radius-full);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    margin-bottom: 10px;
-    box-shadow: var(--shadow-sm);
+    margin-bottom: 8px;
 }
 
 .banner-content h2 {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: #1e1b4b;
-    margin-bottom: 6px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 4px;
 }
-
 .banner-content p {
-    color: #4338ca;
-    font-size: 0.95rem;
+    color: var(--text-body);
+    font-size: 0.88rem;
 }
 
+/* The big percentage score on the right */
 .banner-stat {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     background: #ffffff;
-    padding: 16px 28px;
+    padding: 14px 24px;
     border-radius: var(--radius-md);
-    border: 1px solid #c7d2fe;
-    box-shadow: var(--shadow-sm);
+    border: 1.5px solid #bbf7d0;
+    flex-shrink: 0;
 }
-
 .safety-score-val {
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 800;
-    color: #059669;
+    color: var(--brand-dark);
+    font-family: 'Outfit', sans-serif;
 }
-
 .safety-score-lbl {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 700;
+    margin-top: 2px;
 }
 
-/* Stats Grid */
+
+/* --- 8c: Stats Grid (4 small counter cards) --- */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px;
+    /* Create 4 equal columns, shrink to 2 on small screens automatically */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
 }
 
 .stat-card {
     display: flex;
     align-items: center;
-    gap: 18px;
-    padding: 22px;
-    transition: var(--transition);
+    gap: 14px;
+    padding: 18px 20px;
+    transition: transform var(--speed), box-shadow var(--speed);
 }
-
 .stat-card:hover {
     transform: translateY(-2px);
-    border-color: var(--border-hover);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-hover);
 }
 
+/* Colored square icon container */
 .stat-icon {
-    width: 52px;
-    height: 52px;
+    width: 46px;
+    height: 46px;
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
-.icon-blue { background: #eff6ff; color: #2563eb; }
-.icon-orange { background: #fffbe6; color: #d97706; }
-.icon-green { background: #ecfdf5; color: #059669; }
-.icon-red { background: #fef2f2; color: #dc2626; }
+/* Color variants for each stat icon */
+.icon-blue   { background: #eff6ff; color: #3b82f6; }
+.icon-orange { background: #fff7ed; color: #f59e0b; }
+.icon-green  { background: #f0fdf4; color: #22c55e; }
+.icon-red    { background: #fef2f2; color: #ef4444; }
 
 .stat-details {
     display: flex;
     flex-direction: column;
+    gap: 1px;
 }
-
 .stat-value {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 800;
-    color: var(--text-primary);
+    color: var(--text-dark);
+    font-family: 'Outfit', sans-serif;
+    line-height: 1;
 }
-
 .stat-label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 2px;
 }
 
-/* Action Toolbar */
+
+/* --- 8d: Action Bar (search + filters + buttons) --- */
 .action-bar {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding: 18px 24px;
+    gap: 14px;
+    padding: 16px 20px;
 }
 
+/* Search input with a magnifying glass icon */
 .search-box {
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: #f8fafc;
-    border: 1px solid var(--border-color);
-    padding: 10px 16px;
+    gap: 8px;
+    background: var(--bg-subtle);
+    border: 1.5px solid var(--border);
+    padding: 9px 14px;
     border-radius: var(--radius-md);
     flex: 1;
-    min-width: 240px;
+    min-width: 200px;
+    transition: border-color var(--speed);
 }
-
+.search-box:focus-within {
+    border-color: var(--border-focus);
+}
 .search-icon {
     color: var(--text-muted);
+    font-size: 0.85rem;
 }
-
 .search-box input {
     background: transparent;
     border: none;
     outline: none;
-    color: var(--text-primary);
-    font-size: 0.9rem;
+    color: var(--text-dark);
+    font-size: 0.88rem;
     width: 100%;
+    font-family: inherit;
 }
 
+/* Row of filter pill buttons */
 .filter-group {
     display: flex;
-    gap: 8px;
+    gap: 7px;
     flex-wrap: wrap;
 }
 
+/* Individual filter pill */
 .filter-chip {
-    padding: 8px 16px;
+    padding: 7px 14px;
     border-radius: var(--radius-full);
-    background: #f1f5f9;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    font-size: 0.85rem;
+    background: var(--bg-subtle);
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.82rem;
     font-weight: 600;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all var(--speed);
+    font-family: inherit;
 }
-
 .filter-chip:hover {
-    background: #e2e8f0;
-    color: var(--text-primary);
+    border-color: var(--brand);
+    color: var(--brand-dark);
+    background: var(--brand-light);
 }
-
+/* The currently selected filter */
 .filter-chip.active {
-    background: var(--primary);
+    background: var(--brand);
     color: #ffffff;
-    border-color: var(--primary);
-    box-shadow: 0 2px 10px rgba(79, 70, 229, 0.25);
+    border-color: var(--brand);
 }
 
+/* Wrapper for the Clear Done + New Task buttons */
 .btn-group {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+    align-items: center;
 }
 
-/* Task List */
+
+/* --- 8e: Task List --- */
 .task-section {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .task-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
+/* A single task row */
 .task-card {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 20px 24px;
-    transition: var(--transition);
+    padding: 16px 20px;
+    transition: transform var(--speed), box-shadow var(--speed), border-color var(--speed);
+    gap: 12px;
 }
-
 .task-card:hover {
-    border-color: var(--border-hover);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+    border-color: #a7f3d0;
 }
 
+/* Dim completed tasks */
 .task-card.completed {
-    opacity: 0.65;
-    background: #f8fafc;
+    opacity: 0.58;
+    background: var(--bg-subtle);
 }
-
+/* Strike through the title when done */
 .task-card.completed .task-title {
     text-decoration: line-through;
     color: var(--text-muted);
 }
 
+/* Left part: checkbox + task info */
 .task-left {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
+    gap: 14px;
     flex: 1;
 }
 
-/* Custom Checkbox */
+/* --- Custom Checkbox --- */
+/* We hide the default checkbox and style our own */
 .custom-checkbox {
     position: relative;
     display: inline-block;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     cursor: pointer;
-    margin-top: 2px;
+    margin-top: 3px;
+    flex-shrink: 0;
 }
 
+/* Hide the real checkbox input */
 .custom-checkbox input {
     opacity: 0;
     width: 0;
     height: 0;
+    position: absolute;
 }
 
+/* Our custom box */
 .checkmark {
     position: absolute;
     top: 0;
     left: 0;
-    height: 24px;
-    width: 24px;
-    background-color: #ffffff;
-    border: 2px solid #cbd5e1;
-    border-radius: 6px;
-    transition: var(--transition);
+    height: 22px;
+    width: 22px;
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    transition: all var(--speed);
 }
 
+/* When hovering the checkbox, show brand color */
 .custom-checkbox:hover input ~ .checkmark {
-    border-color: var(--primary);
+    border-color: var(--brand);
 }
 
+/* When the checkbox IS checked, fill it green */
 .custom-checkbox input:checked ~ .checkmark {
-    background-color: #10b981;
-    border-color: #10b981;
+    background: var(--brand);
+    border-color: var(--brand);
 }
 
+/* Draw a white checkmark tick inside */
 .checkmark:after {
     content: "";
     position: absolute;
     display: none;
-    left: 7px;
-    top: 3px;
-    width: 6px;
-    height: 12px;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
     border: solid white;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
-
 .custom-checkbox input:checked ~ .checkmark:after {
     display: block;
 }
 
+/* The text content of the task */
 .task-details {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
     flex: 1;
 }
-
 .task-title {
-    font-size: 1.05rem;
+    font-size: 0.98rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--text-dark);
+    line-height: 1.3;
 }
-
 .task-desc {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
+    font-size: 0.85rem;
+    color: var(--text-body);
     line-height: 1.4;
 }
 
+/* Row of small tags: category, priority, date */
 .task-meta {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
     flex-wrap: wrap;
-    margin-top: 4px;
+    margin-top: 3px;
 }
 
+/* Shared badge style */
 .badge {
-    padding: 4px 12px;
+    padding: 3px 10px;
     border-radius: var(--radius-full);
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
 }
 
+/* Category badge (grey) */
 .category-badge {
-    background: #f1f5f9;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
+    background: #f0f9f4;
+    color: var(--text-body);
+    border: 1.5px solid var(--border);
 }
 
-.priority-high { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
-.priority-medium { background: #fffbe6; color: #d97706; border: 1px solid #fef3c7; }
-.priority-low { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+/* Priority badge colors */
+.priority-high   { background: #fef2f2; color: #dc2626; border: 1.5px solid #fca5a5; }
+.priority-medium { background: #fffbeb; color: #d97706; border: 1.5px solid #fde68a; }
+.priority-low    { background: #f0fdf4; color: #16a34a; border: 1.5px solid #bbf7d0; }
 
+/* Small date text */
 .task-date {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
     font-weight: 500;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
 }
 
+/* Edit & Delete buttons on the right of each task */
 .task-actions {
     display: flex;
-    gap: 6px;
+    gap: 5px;
+    flex-shrink: 0;
 }
 
+/* Base style for edit / delete action buttons */
 .action-btn {
     background: transparent;
-    border: 1px solid transparent;
+    border: 1.5px solid transparent;
     color: var(--text-muted);
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: var(--transition);
-    font-size: 1rem;
+    transition: all var(--speed);
+    font-size: 0.9rem;
 }
 
-.edit-btn:hover { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
-.delete-btn:hover { background: #fef2f2; color: #dc2626; border-color: #fca5a5; }
+/* Blue hover for edit button */
+.edit-btn:hover {
+    background: #eff6ff;
+    color: #3b82f6;
+    border-color: #bfdbfe;
+}
 
-/* Empty State */
+/* Red hover for delete button */
+.delete-btn:hover {
+    background: #fef2f2;
+    color: var(--red);
+    border-color: #fca5a5;
+}
+
+
+/* --- 8f: Empty State (shown when no tasks) --- */
 .empty-state {
     text-align: center;
-    padding: 50px 20px;
+    padding: 48px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
 }
-
 .empty-icon {
-    font-size: 3.2rem;
-    color: var(--text-muted);
+    font-size: 2.8rem;
+    color: var(--brand);
     margin-bottom: 4px;
 }
+.empty-state h3 {
+    font-size: 1.15rem;
+    color: var(--text-dark);
+}
+.empty-state p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    max-width: 340px;
+}
 
-.empty-state h3 { font-size: 1.3rem; color: var(--text-primary); }
-.empty-state p { color: var(--text-secondary); max-width: 400px; font-size: 0.95rem; }
 
-/* Modal Styles */
+/* ----------------------------------------
+   STEP 9: Modal (Add / Edit Task Popup)
+   A modal is a popup that appears over the page.
+   ---------------------------------------- */
+
+/* The dark background overlay behind the modal */
 .modal-overlay {
-    position: fixed;
+    position: fixed;   /* stays in place even if you scroll */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(4px);
+    background: rgba(26, 58, 42, 0.45);   /* dark green tint */
+    backdrop-filter: blur(3px);           /* blurs what's behind it */
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 1000;   /* appear above everything else */
     padding: 20px;
 }
 
+/* The white popup box */
 .modal-card {
     width: 100%;
-    max-width: 500px;
-    padding: 30px;
+    max-width: 480px;
+    padding: 26px;
 }
 
+/* Top row of modal: title + close button */
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid var(--border);
 }
-
 .modal-header h3 {
-    font-size: 1.3rem;
-    color: var(--text-primary);
+    font-size: 1.15rem;
+    color: var(--text-dark);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
+/* The X button to close the modal */
 .btn-close {
     background: transparent;
     border: none;
     color: var(--text-muted);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     cursor: pointer;
+    padding: 4px;
+    border-radius: 5px;
+    transition: color var(--speed);
+    line-height: 1;
+}
+.btn-close:hover {
+    color: var(--red);
 }
 
-.btn-close:hover { color: var(--text-primary); }
+/* Form inside the modal */
+#task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
 
+/* Two side-by-side inputs (Category + Priority) */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 12px;
 }
 
+/* Bottom row of modal: Cancel + Save buttons */
 .modal-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
-    margin-top: 10px;
+    gap: 10px;
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top: 1.5px solid var(--border);
 }
 
-/* Toast Container */
+
+/* ----------------------------------------
+   STEP 10: Toast Notifications
+   Small popup messages at the bottom-right corner.
+   They appear briefly then fade out.
+   ---------------------------------------- */
+
+/* Container holding all toasts */
 .toast-container {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    bottom: 22px;
+    right: 22px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    z-index: 2000;
+    gap: 8px;
+    z-index: 2000;   /* above the modal overlay */
 }
 
+/* A single toast message */
 .toast {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 14px 20px;
+    gap: 9px;
+    padding: 12px 18px;
     background: #ffffff;
-    border: 1px solid var(--border-color);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius-md);
-    color: var(--text-primary);
-    box-shadow: var(--shadow-lg);
-    font-size: 0.9rem;
+    color: var(--text-dark);
+    box-shadow: var(--shadow-hover);
+    font-size: 0.88rem;
     font-weight: 500;
-    animation: slideIn 0.3s ease forwards;
+    max-width: 320px;
+    /* Slide-in animation from the bottom */
+    animation: slideUp 0.25s ease forwards;
 }
 
-.toast-success i { color: #059669; }
-.toast-error i { color: #dc2626; }
-.toast-info i { color: #2563eb; }
+/* Icon colors for each type */
+.toast-success i { color: var(--green); }
+.toast-error   i { color: var(--red);   }
+.toast-info    i { color: #3b82f6;      }   /* blue */
 
+/* Fade-out when the toast is about to disappear */
 .toast.fade-out {
     opacity: 0;
-    transform: translateY(10px);
-    transition: 0.3s ease;
+    transform: translateY(8px);
+    transition: 0.25s ease;
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* The slide-up animation definition */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0);    }
 }
 
-/* Responsive adjustments */
+
+/* ----------------------------------------
+   STEP 11: Responsive Design
+   On smaller screens (phones), stack things vertically.
+   @media means "apply these styles ONLY when the screen
+   is this wide or smaller".
+   ---------------------------------------- */
 @media (max-width: 640px) {
-    .safety-banner { flex-direction: column; text-align: center; gap: 20px; }
-    .form-row { grid-template-columns: 1fr; }
-    .action-bar { flex-direction: column; align-items: stretch; }
-    .search-box { min-width: 100%; }
-    .btn-group { flex-direction: column; }
+    /* Stack banner vertically */
+    .safety-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* Stack action bar vertically */
+    .action-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* Make search full width */
+    .search-box {
+        min-width: 100%;
+    }
+
+    /* Stack the Category + Priority selects */
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stack buttons vertically */
+    .btn-group {
+        flex-direction: column;
+    }
+
+    /* Hide user info text on very small screens */
+    .user-info {
+        display: none;
+    }
 }
