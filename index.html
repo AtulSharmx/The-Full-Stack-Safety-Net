@@ -2,361 +2,134 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Makes the page look correct on mobile phones -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SafetyNet - A simple task manager to track your goals and deadlines.">
-    <title>SafetyNet 🛡️ - Task Manager</title>
-
-    <!-- Load Google Fonts (Inter for body text, Outfit for headings) -->
+    <title>SafetyNet</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Load Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Load our own CSS file -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 <body>
-
-    <!-- Toast messages appear here (small popups at the bottom right) -->
     <div id="toast-container" class="toast-container"></div>
-
-    <!-- ============================================================ -->
-    <!-- MAIN APP WRAPPER - everything lives inside this box -->
-    <!-- ============================================================ -->
     <div class="app-container">
-
-        <!-- ========================================================
-             SCREEN 1: LOGIN / SIGNUP PAGE
-             Shown when the user is NOT logged in.
-             Hidden with the "hidden" class once user logs in.
-             ======================================================== -->
         <section id="auth-screen" class="auth-screen">
-            <!-- The white login card in the center -->
-            <div class="auth-card card">
-
-                <!-- Logo + Welcome Title -->
+            <div class="auth-card">
                 <div class="auth-header">
-                    <div class="brand-logo">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <span>SafetyNet</span>
-                    </div>
-                    <h2>Welcome Back!</h2>
-                    <p id="auth-subtitle">Your simple task manager & goal tracker</p>
+                    <h2>SafetyNet</h2>
+                    <p>Welcome back</p>
                 </div>
-
-                <!-- Tab buttons: "Sign In" or "Create Account" -->
-                <div class="auth-tabs">
-                    <button id="tab-login-btn"  class="tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
-                    <button id="tab-signup-btn" class="tab-btn"        onclick="switchAuthTab('signup')">Create Account</button>
+                <div class="google-login-container">
+                    <div id="g_id_onload"
+                         data-client_id="668493467457-rci6n6bffsqpobothjau4snemev22vea.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleGoogleLogin"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
                 </div>
-
-                <!-- LOGIN FORM -->
-                <!-- onsubmit calls handleLogin() in app.js when user clicks Sign In -->
-                <form id="login-form" class="auth-form" onsubmit="handleLogin(event)">
-                    <div class="input-group">
-                        <label for="login-email">
-                            <i class="fa-regular fa-envelope"></i> Email Address
-                        </label>
-                        <input type="email" id="login-email" placeholder="name@example.com" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="login-password">
-                            <i class="fa-solid fa-lock"></i> Password
-                        </label>
-                        <input type="password" id="login-password" placeholder="Enter your password" required>
-                    </div>
-
-                    <!-- Primary action: Sign in -->
-                    <button type="submit" class="btn btn-primary btn-block">
-                        Sign In &nbsp;<i class="fa-solid fa-arrow-right"></i>
-                    </button>
-
-                    <!-- Divider line with OR text -->
-                    <div class="divider"><span>OR</span></div>
-
-                    <!-- Guest login button (no password needed) -->
-                    <button type="button" class="btn btn-secondary btn-block" onclick="startGuestSession()">
-                        <i class="fa-solid fa-user-shield"></i> Continue as Guest
-                    </button>
-                </form>
-
-                <!-- SIGNUP FORM (hidden by default, shown when tab is switched) -->
-                <form id="signup-form" class="auth-form hidden" onsubmit="handleSignup(event)">
-                    <div class="input-group">
-                        <label for="signup-name">
-                            <i class="fa-regular fa-user"></i> Full Name
-                        </label>
-                        <input type="text" id="signup-name" placeholder="Your Name" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="signup-email">
-                            <i class="fa-regular fa-envelope"></i> Email Address
-                        </label>
-                        <input type="email" id="signup-email" placeholder="name@example.com" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="signup-password">
-                            <i class="fa-solid fa-lock"></i> Password
-                        </label>
-                        <input type="password" id="signup-password" placeholder="At least 6 characters" minlength="6" required>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fa-solid fa-user-plus"></i> Create Account
-                    </button>
-                </form>
-
             </div>
         </section>
 
-
-        <!-- ========================================================
-             SCREEN 2: DASHBOARD (main app)
-             Hidden with the "hidden" class until user logs in.
-             ======================================================== -->
         <section id="dashboard-screen" class="dashboard-screen hidden">
-
-            <!-- TOP NAVIGATION BAR -->
-            <header class="navbar card">
-                <!-- Left: App name + icon -->
-                <div class="nav-brand">
-                    <i class="fa-solid fa-shield-halved brand-icon"></i>
-                    <span>SafetyNet</span>
-                </div>
-
-                <!-- Right: User info + avatar + logout button -->
+            <header class="navbar">
+                <div class="nav-brand">SafetyNet</div>
                 <div class="user-profile">
-                    <div class="user-info">
-                        <span class="user-greeting">Signed in as</span>
-                        <!-- This text is updated by JavaScript with the user's name -->
-                        <span id="user-display-name" class="user-name">User</span>
-                    </div>
-                    <!-- Avatar circle showing first letter of user's name -->
-                    <div class="avatar" id="user-avatar">U</div>
-                    <!-- Logout button (calls handleLogout in app.js) -->
-                    <button class="btn-icon" onclick="handleLogout()" title="Sign Out">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </button>
+                    <span id="user-display-name" class="user-name"></span>
+                    <button class="btn-text" onclick="handleLogout()">Logout</button>
                 </div>
             </header>
 
-
-            <!-- MAIN CONTENT AREA -->
             <main class="dashboard-content">
-
-                <!-- SAFETY SCORE BANNER -->
-                <!-- Shows a welcome message + your current completion percentage -->
-                <div class="safety-banner card">
-                    <div class="banner-content">
-                        <!-- Small green pill label -->
-                        <div class="shield-badge">
-                            <i class="fa-solid fa-shield-check"></i> All Systems Go
-                        </div>
-                        <h2>Your Task Overview</h2>
-                        <p>Track your goals, deadlines, and daily progress.</p>
-                    </div>
-                    <!-- The big % number (calculated by JavaScript) -->
-                    <div class="banner-stat">
-                        <span class="safety-score-val" id="safety-score-val">100%</span>
-                        <span class="safety-score-lbl">Done</span>
-                    </div>
-                </div>
-
-
-                <!-- STATS ROW (4 counter boxes) -->
                 <div class="stats-grid">
-
-                    <!-- Total Tasks -->
-                    <div class="stat-card card">
-                        <div class="stat-icon icon-blue">
-                            <i class="fa-solid fa-list-check"></i>
-                        </div>
-                        <div class="stat-details">
-                            <!-- Number updated by JavaScript -->
-                            <span class="stat-value" id="stat-total">0</span>
-                            <span class="stat-label">Total Tasks</span>
-                        </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Total</span>
+                        <span class="stat-value" id="stat-total">0</span>
                     </div>
-
-                    <!-- Pending Tasks -->
-                    <div class="stat-card card">
-                        <div class="stat-icon icon-orange">
-                            <i class="fa-regular fa-clock"></i>
-                        </div>
-                        <div class="stat-details">
-                            <span class="stat-value" id="stat-pending">0</span>
-                            <span class="stat-label">Pending</span>
-                        </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Pending</span>
+                        <span class="stat-value" id="stat-pending">0</span>
                     </div>
-
-                    <!-- Completed Tasks -->
-                    <div class="stat-card card">
-                        <div class="stat-icon icon-green">
-                            <i class="fa-regular fa-circle-check"></i>
-                        </div>
-                        <div class="stat-details">
-                            <span class="stat-value" id="stat-completed">0</span>
-                            <span class="stat-label">Completed</span>
-                        </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Done</span>
+                        <span class="stat-value" id="stat-completed">0</span>
                     </div>
-
-                    <!-- High Priority Tasks -->
-                    <div class="stat-card card">
-                        <div class="stat-icon icon-red">
-                            <i class="fa-solid fa-fire"></i>
-                        </div>
-                        <div class="stat-details">
-                            <span class="stat-value" id="stat-high">0</span>
-                            <span class="stat-label">High Priority</span>
-                        </div>
-                    </div>
-
                 </div>
 
-
-                <!-- ACTION BAR (search + filter + buttons) -->
-                <div class="action-bar card">
-
-                    <!-- Search box: type to filter tasks -->
-                    <div class="search-box">
-                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <!-- oninput fires filterTasks() every time you type a letter -->
-                        <input type="text" id="search-input" placeholder="Search tasks..." oninput="filterTasks()">
-                    </div>
-
-                    <!-- Filter chips: click to show only certain tasks -->
+                <div class="action-bar">
+                    <input type="text" id="search-input" placeholder="Search..." oninput="filterTasks()">
                     <div class="filter-group">
-                        <button class="filter-chip active" data-filter="all"       onclick="setFilter('all')">All</button>
-                        <button class="filter-chip"        data-filter="pending"   onclick="setFilter('pending')">Pending</button>
-                        <button class="filter-chip"        data-filter="completed" onclick="setFilter('completed')">Completed</button>
-                        <button class="filter-chip"        data-filter="high"      onclick="setFilter('high')">🔥 High</button>
+                        <button class="filter-chip active" data-filter="all" onclick="setFilter('all')">All</button>
+                        <button class="filter-chip" data-filter="pending" onclick="setFilter('pending')">Pending</button>
+                        <button class="filter-chip" data-filter="completed" onclick="setFilter('completed')">Done</button>
                     </div>
-
-                    <!-- Action buttons -->
                     <div class="btn-group">
-                        <!-- Remove all completed tasks -->
-                        <button class="btn btn-outline" onclick="clearCompletedTasks()">
-                            <i class="fa-regular fa-trash-can"></i> Clear Done
-                        </button>
-                        <!-- Open the "Add Task" popup -->
-                        <button class="btn btn-primary" onclick="openTaskModal()">
-                            <i class="fa-solid fa-plus"></i> New Task
-                        </button>
+                        <button class="btn-outline" onclick="clearCompletedTasks()">Clear</button>
+                        <button class="btn-primary" onclick="openTaskModal()">New Task</button>
                     </div>
-
                 </div>
 
-
-                <!-- TASK LIST AREA -->
                 <div class="task-section">
-                    <!-- Tasks are inserted here by JavaScript (renderDashboard in app.js) -->
                     <div id="task-list" class="task-list"></div>
-
-                    <!-- Empty State: shown when there are no tasks to display -->
-                    <div id="empty-state" class="empty-state card hidden">
-                        <div class="empty-icon"><i class="fa-solid fa-clipboard-check"></i></div>
-                        <h3>No Tasks Here!</h3>
-                        <p id="empty-message">Your list is clear. Click "New Task" to add your first goal.</p>
-                        <button class="btn btn-primary" onclick="openTaskModal()">
-                            <i class="fa-solid fa-plus"></i> Add a Task
-                        </button>
-                    </div>
+                    <div id="empty-state" class="empty-state hidden">No tasks found</div>
                 </div>
-
             </main>
         </section>
-
     </div>
-    <!-- End .app-container -->
 
-
-    <!-- ============================================================
-         MODAL POPUP: Add or Edit a Task
-         This is hidden (display: none) by default.
-         It appears when you click "New Task" or the edit button.
-         ============================================================ -->
     <div id="task-modal" class="modal-overlay hidden" onclick="closeTaskModalOnOverlay(event)">
-        <!-- The white box inside the dark overlay -->
-        <div class="modal-card card">
-
-            <!-- Modal Header: title + close button -->
+        <div class="modal-card">
             <div class="modal-header">
-                <h3 id="modal-title">
-                    <i class="fa-solid fa-square-plus"></i> New Task
-                </h3>
-                <!-- Clicking X calls closeTaskModal() in app.js -->
-                <button class="btn-close" onclick="closeTaskModal()" aria-label="Close">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <h3 id="modal-title">Task</h3>
             </div>
-
-            <!-- Task Form -->
-            <!-- onsubmit calls handleSaveTask() when you click "Save Task" -->
             <form id="task-form" onsubmit="handleSaveTask(event)">
-
-                <!-- Hidden input to store the task ID when editing -->
                 <input type="hidden" id="task-id">
-
-                <!-- Task Title (required field) -->
                 <div class="input-group">
-                    <label for="task-title-input">Task Title *</label>
-                    <input type="text" id="task-title-input" placeholder="e.g., Finish homework, Go for a run..." required>
+                    <label for="task-title-input">Title</label>
+                    <input type="text" id="task-title-input" required>
                 </div>
-
-                <!-- Notes / Description (optional) -->
                 <div class="input-group">
-                    <label for="task-desc-input">Notes (optional)</label>
-                    <textarea id="task-desc-input" rows="3" placeholder="Add extra details here..."></textarea>
+                    <label for="task-desc-input">Description</label>
+                    <textarea id="task-desc-input" rows="2"></textarea>
                 </div>
-
-                <!-- Category + Priority side by side -->
                 <div class="form-row">
                     <div class="input-group">
                         <label for="task-category">Category</label>
-                        <!-- A dropdown select menu -->
                         <select id="task-category">
-                            <option value="Work">💻 Work</option>
-                            <option value="Personal">🏠 Personal</option>
-                            <option value="Study">📚 Study</option>
-                            <option value="Health">💪 Health</option>
+                            <option value="Work">Work</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Study">Study</option>
+                            <option value="Health">Health</option>
                         </select>
                     </div>
                     <div class="input-group">
                         <label for="task-priority">Priority</label>
                         <select id="task-priority">
-                            <option value="Low">🟢 Low</option>
-                            <option value="Medium" selected>🟡 Medium</option>
-                            <option value="High">🔴 High</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
                         </select>
                     </div>
                 </div>
-
-                <!-- Due Date picker -->
                 <div class="input-group">
                     <label for="task-due-date">Due Date</label>
                     <input type="date" id="task-due-date">
                 </div>
-
-                <!-- Footer: Cancel + Save buttons -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeTaskModal()">Cancel</button>
-                    <button type="submit"  class="btn btn-primary">
-                        <i class="fa-solid fa-check"></i> Save Task
-                    </button>
+                    <button type="button" class="btn-outline" onclick="closeTaskModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save</button>
                 </div>
-
             </form>
         </div>
     </div>
-
-
-    <!-- Load our JavaScript file (this runs the app logic) -->
     <script src="app.js"></script>
 </body>
 </html>

@@ -1,33 +1,30 @@
-# The Full-Stack Safety Net 🛡️
+# SafetyNet
 
-A sleek, modern, beginner-friendly task management and productivity safety dashboard built purely with **HTML5**, **Vanilla CSS3**, and **Vanilla JavaScript**.
+A minimalist, highly-focused task management system.
 
-## 🌟 Overview
+## Overview
+SafetyNet is a lightweight application designed to help you organize tasks, manage priorities, and track your progress without the bloat. Built with a pure, vanilla tech stack, it provides a seamless and fast experience.
 
-**The Full-Stack Safety Net** is redesigned to eliminate complex framework overhead, heavy build tools, and complicated backend dependencies. It provides a full web app experience running directly in any browser using standard core web fundamentals.
+## Features
+- **Minimalist UI:** A stark, distraction-free interface focusing only on what matters.
+- **Google Sign-In:** Secure, one-click authentication.
+- **Local Persistence:** Data is securely saved in your browser's local storage.
+- **Zero-Boilerplate Codebase:** Beginner-friendly, pure HTML/CSS/JS.
 
-### Key Features
-- **🛡️ Safety Score Dashboard**: Dynamic real-time calculation of your task completion rate and safety metrics.
-- **🔐 User Authentication**: Built-in account creation, sign in, and instant one-click demo access.
-- **💾 Local Storage Backend**: Data persistence built right into the browser (`localStorage`) for multi-user support without external servers.
-- **✨ Glassmorphism UI Design**: Deep modern dark theme, smooth gradient cards, responsive layout, and interactive state badges.
-- **⚡ Task CRUD & Live Filtering**: Create, edit, delete, mark completed, search by keywords, and filter by priority levels.
+## Tech Stack
+- HTML5
+- CSS3 (Vanilla)
+- JavaScript (Vanilla)
+- Google Identity Services (OAuth 2.0)
 
----
+## Getting Started
 
-## 🛠️ Tech Stack & Architecture
+1. Clone the repository.
+2. Open `index.html` in your browser or run it via a local server (e.g., Live Server).
+3. Sign in with Google to start managing your tasks.
 
-This repository is strictly maintained with 3 core web stack files:
+## Deployment
+This project is deployment-ready for static hosting platforms like Vercel, Netlify, or GitHub Pages.
 
-- **`index.html`**: Semantic document structure, modals, and accessible markup.
-- **`style.css`**: Design system with CSS variables, flexbox/grid layouts, glassmorphism aesthetics, and animations.
-- **`app.js`**: Beginner-friendly, easy-to-read DOM manipulation, event routing, and storage handling.
-
----
-
-## 🚀 How to Run
-
-No `npm install` or build commands required! Simply:
-
-1. Clone or download this repository.
-2. Double-click `index.html` or open it in any web browser.
+## License
+MIT

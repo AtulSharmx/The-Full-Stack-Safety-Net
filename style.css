@@ -1,1039 +1,303 @@
-/* ==========================================================================
-   THE FULL-STACK SAFETY NET - SIMPLE & CLEAN STYLE
-   ==========================================================================
-   This file styles the whole app.
-   We use CSS "Custom Properties" (also called variables) to store colors
-   and sizes at the top, so we only need to change them in one place.
-   ========================================================================== */
-
-
-/* ----------------------------------------
-   STEP 1: Define our color palette and sizes
-   These are like "named values" we can reuse anywhere below.
-   ---------------------------------------- */
-:root {
-    /* --- Background Colors --- */
-    --bg-page:   #f0f9f4;   /* very light green - the page background */
-    --bg-card:   #ffffff;   /* pure white - for cards / panels */
-    --bg-subtle: #f6fbf8;   /* slightly green tinted - hover backgrounds */
-
-    /* --- Border Colors --- */
-    --border:       #c8e6d4;   /* soft green border */
-    --border-focus: #26a069;   /* darker green when an input is clicked */
-
-    /* --- Text Colors --- */
-    --text-dark:   #1a3a2a;   /* very dark green - main headings */
-    --text-body:   #3d6b52;   /* medium green - paragraph text */
-    --text-muted:  #7aab90;   /* light green - small labels / hints */
-
-    /* --- Brand Color (buttons, active states) --- */
-    --brand:       #22c55e;   /* bright green */
-    --brand-dark:  #16a34a;   /* darker green for hover */
-    --brand-light: #dcfce7;   /* very light green background tint */
-
-    /* --- Status Colors --- */
-    --red:    #ef4444;   /* for High priority / errors */
-    --yellow: #f59e0b;   /* for Medium priority */
-    --green:  #22c55e;   /* for Low priority / success */
-
-    /* --- Rounded Corners --- */
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 16px;
-    --radius-full: 9999px;  /* makes pill / circle shapes */
-
-    /* --- Shadow (drop shadow behind cards) --- */
-    --shadow: 0 2px 10px rgba(34, 197, 94, 0.08);
-    --shadow-hover: 0 6px 20px rgba(34, 197, 94, 0.14);
-
-    /* --- How fast animations play --- */
-    --speed: 0.18s ease;
-}
-
-
-/* ----------------------------------------
-   STEP 2: Global Reset
-   Remove browser default margin and padding
-   so every browser looks the same.
-   ---------------------------------------- */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* padding/border won't grow element outside its width */
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
-
-
-/* ----------------------------------------
-   STEP 3: Base Body Styles
-   The outermost container for the whole page.
-   ---------------------------------------- */
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--bg-page);
-    color: var(--text-body);
-    min-height: 100vh;   /* at least full screen height */
+    background-color: #ffffff;
+    color: #111111;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;   /* center content horizontally */
-    align-items: flex-start;   /* start from top */
-    line-height: 1.6;
+    justify-content: center;
+    line-height: 1.5;
 }
-
-/* Use 'Outfit' font for all headings */
-h1, h2, h3, h4 {
-    font-family: 'Outfit', sans-serif;
-    color: var(--text-dark);
-}
-
-
-/* ----------------------------------------
-   STEP 4: Utility Classes
-   Short helper classes used throughout HTML.
-   ---------------------------------------- */
-
-/* Hide any element instantly */
 .hidden {
     display: none !important;
 }
-
-/* White card box with border and shadow */
-.card {
-    background: var(--bg-card);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-}
-
-/* Main wrapper that limits width and centers content */
 .app-container {
     width: 100%;
-    max-width: 900px;
-    padding: 32px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;   /* space between each section */
+    max-width: 800px;
+    padding: 40px 20px;
 }
-
-
-/* ----------------------------------------
-   STEP 5: Button Styles
-   Buttons are used everywhere. We have a
-   base style + color variations.
-   ---------------------------------------- */
-
-/* Base button style — shared by all buttons */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    padding: 10px 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    border-radius: var(--radius-md);
-    border: none;
-    cursor: pointer;
-    transition: all var(--speed);
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-/* Green filled button — main action */
-.btn-primary {
-    background-color: var(--brand);
-    color: #ffffff;
-}
-.btn-primary:hover {
-    background-color: var(--brand-dark);
-    transform: translateY(-1px);   /* tiny lift effect on hover */
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-}
-
-/* Light button — secondary action */
-.btn-secondary {
-    background-color: var(--bg-subtle);
-    color: var(--text-body);
-    border: 1.5px solid var(--border);
-}
-.btn-secondary:hover {
-    background-color: var(--brand-light);
-    border-color: var(--brand);
-    color: var(--brand-dark);
-}
-
-/* Outline button — soft action (e.g. Clear Done) */
-.btn-outline {
-    background-color: transparent;
-    color: var(--text-muted);
-    border: 1.5px solid var(--border);
-}
-.btn-outline:hover {
-    background-color: #fef2f2;
-    color: var(--red);
-    border-color: #fca5a5;
-}
-
-/* Make a button stretch to full width */
-.btn-block {
-    width: 100%;
-}
-
-/* Small square icon button (logout button in navbar) */
-.btn-icon {
-    background: var(--bg-card);
-    border: 1.5px solid var(--border);
-    color: var(--text-muted);
-    width: 38px;
-    height: 38px;
-    border-radius: var(--radius-md);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all var(--speed);
-    font-size: 0.95rem;
-}
-.btn-icon:hover {
-    color: var(--red);
-    border-color: #fca5a5;
-    background: #fef2f2;
-}
-
-
-/* ----------------------------------------
-   STEP 6: Input / Form Styles
-   Inputs, selects, textareas all look the same.
-   ---------------------------------------- */
-
-/* Wrapper for label + input together */
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-/* The label text above each input */
-.input-group label {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text-body);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* The actual input box, dropdown, or textarea */
-.input-group input,
-.input-group select,
-.input-group textarea {
-    width: 100%;
-    padding: 11px 14px;
-    background: var(--bg-subtle);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-md);
-    color: var(--text-dark);
-    font-size: 0.9rem;
-    font-family: inherit;
-    outline: none;
-    transition: border-color var(--speed), box-shadow var(--speed);
-}
-
-/* When the user clicks an input, highlight it */
-.input-group input:focus,
-.input-group select:focus,
-.input-group textarea:focus {
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
-    background: #ffffff;
-}
-
-
-/* ----------------------------------------
-   STEP 7: Auth / Login Screen
-   The screen shown before a user logs in.
-   ---------------------------------------- */
-
-/* Full-screen centered wrapper */
 .auth-screen {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 88vh;
-    width: 100%;
+    min-height: 70vh;
 }
-
-/* The white login box */
 .auth-card {
-    width: 100%;
-    max-width: 420px;
-    padding: 36px 30px;
-}
-
-/* Top section: logo + title */
-.auth-header {
     text-align: center;
-    margin-bottom: 26px;
+    padding: 40px;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 360px;
 }
-
-/* App logo: icon + name */
-.brand-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-dark);
-    font-family: 'Outfit', sans-serif;
-    margin-bottom: 10px;
-}
-.brand-logo i {
-    color: var(--brand);
-}
-
 .auth-header h2 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 4px;
+    font-size: 24px;
+    font-weight: 600;
 }
 .auth-header p {
-    color: var(--text-muted);
-    font-size: 0.88rem;
+    color: #666666;
+    font-size: 14px;
+    margin-top: 4px;
 }
-
-/* The Sign In / Create Account tab row */
-.auth-tabs {
+.google-login-container {
+    margin-top: 24px;
     display: flex;
-    background: var(--bg-subtle);
-    padding: 4px;
-    border-radius: var(--radius-md);
-    margin-bottom: 22px;
-    border: 1.5px solid var(--border);
+    justify-content: center;
 }
-
-.tab-btn {
-    flex: 1;
-    padding: 9px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    background: transparent;
-    border: none;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: all var(--speed);
-    font-family: inherit;
-}
-
-/* The active (selected) tab */
-.tab-btn.active {
-    background: var(--bg-card);
-    color: var(--brand-dark);
-    box-shadow: 0 1px 4px rgba(34, 197, 94, 0.15);
-}
-
-/* The form area inside the auth card */
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-/* The "OR" divider between Sign In and Continue as Guest */
-.divider {
-    display: flex;
-    align-items: center;
-    color: var(--text-muted);
-    font-size: 0.78rem;
-    gap: 10px;
-}
-.divider::before,
-.divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-}
-
-
-/* ----------------------------------------
-   STEP 8: Dashboard Screen
-   The main app screen after logging in.
-   ---------------------------------------- */
-
-/* Outer wrapper for the entire dashboard */
-.dashboard-screen {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-}
-
-
-/* --- 8a: Navbar (top bar) --- */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 32px;
 }
-
 .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.25rem;
-    font-weight: 800;
-    font-family: 'Outfit', sans-serif;
-    color: var(--text-dark);
+    font-size: 18px;
+    font-weight: 600;
 }
-.brand-icon {
-    color: var(--brand);
-    font-size: 1.4rem;
-}
-
-/* Right side of navbar: avatar + username + logout */
 .user-profile {
     display: flex;
     align-items: center;
-    gap: 12px;
-}
-.user-info {
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-}
-.user-greeting {
-    font-size: 0.72rem;
-    color: var(--text-muted);
+    gap: 16px;
 }
 .user-name {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: var(--text-dark);
+    font-size: 14px;
 }
-
-/* The circular avatar with user's initial */
-.avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-full);
-    background: var(--brand);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1rem;
-    font-family: 'Outfit', sans-serif;
+.btn-text {
+    background: none;
+    border: none;
+    color: #666666;
+    font-size: 14px;
+    cursor: pointer;
 }
-
-
-/* --- 8b: Safety Status Banner --- */
-.safety-banner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 28px;
-    background: var(--brand-light);
-    border: 1.5px solid #bbf7d0;   /* light green border */
-    gap: 20px;
+.btn-text:hover {
+    color: #111111;
 }
-
-/* Small pill at the top of the banner */
-.shield-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: #ffffff;
-    color: var(--brand-dark);
-    border: 1.5px solid #bbf7d0;
-    padding: 3px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.banner-content h2 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 4px;
-}
-.banner-content p {
-    color: var(--text-body);
-    font-size: 0.88rem;
-}
-
-/* The big percentage score on the right */
-.banner-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #ffffff;
-    padding: 14px 24px;
-    border-radius: var(--radius-md);
-    border: 1.5px solid #bbf7d0;
-    flex-shrink: 0;
-}
-.safety-score-val {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--brand-dark);
-    font-family: 'Outfit', sans-serif;
-}
-.safety-score-lbl {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 700;
-    margin-top: 2px;
-}
-
-
-/* --- 8c: Stats Grid (4 small counter cards) --- */
 .stats-grid {
     display: grid;
-    /* Create 4 equal columns, shrink to 2 on small screens automatically */
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
 }
-
 .stat-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 18px 20px;
-    transition: transform var(--speed), box-shadow var(--speed);
-}
-.stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-hover);
-}
-
-/* Colored square icon container */
-.stat-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    flex-shrink: 0;
-}
-
-/* Color variants for each stat icon */
-.icon-blue   { background: #eff6ff; color: #3b82f6; }
-.icon-orange { background: #fff7ed; color: #f59e0b; }
-.icon-green  { background: #f0fdf4; color: #22c55e; }
-.icon-red    { background: #fef2f2; color: #ef4444; }
-
-.stat-details {
+    padding: 20px;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
-    gap: 1px;
-}
-.stat-value {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-dark);
-    font-family: 'Outfit', sans-serif;
-    line-height: 1;
+    gap: 8px;
 }
 .stat-label {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-weight: 500;
-    margin-top: 2px;
+    font-size: 13px;
+    color: #666666;
 }
-
-
-/* --- 8d: Action Bar (search + filters + buttons) --- */
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
+}
 .action-bar {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    padding: 16px 20px;
-}
-
-/* Search input with a magnifying glass icon */
-.search-box {
-    display: flex;
     align-items: center;
-    gap: 8px;
-    background: var(--bg-subtle);
-    border: 1.5px solid var(--border);
-    padding: 9px 14px;
-    border-radius: var(--radius-md);
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+#search-input {
+    padding: 8px 12px;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
     flex: 1;
     min-width: 200px;
-    transition: border-color var(--speed);
 }
-.search-box:focus-within {
-    border-color: var(--border-focus);
+#search-input:focus {
+    border-color: #111111;
 }
-.search-icon {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-}
-.search-box input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--text-dark);
-    font-size: 0.88rem;
-    width: 100%;
-    font-family: inherit;
-}
-
-/* Row of filter pill buttons */
 .filter-group {
     display: flex;
-    gap: 7px;
-    flex-wrap: wrap;
+    gap: 8px;
 }
-
-/* Individual filter pill */
 .filter-chip {
-    padding: 7px 14px;
-    border-radius: var(--radius-full);
-    background: var(--bg-subtle);
-    border: 1.5px solid var(--border);
-    color: var(--text-muted);
-    font-size: 0.82rem;
-    font-weight: 600;
+    background: none;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    font-size: 13px;
     cursor: pointer;
-    transition: all var(--speed);
-    font-family: inherit;
+    border-radius: 6px;
+    color: #666666;
 }
-.filter-chip:hover {
-    border-color: var(--brand);
-    color: var(--brand-dark);
-    background: var(--brand-light);
-}
-/* The currently selected filter */
 .filter-chip.active {
-    background: var(--brand);
-    color: #ffffff;
-    border-color: var(--brand);
+    background: #f5f5f5;
+    color: #111111;
 }
-
-/* Wrapper for the Clear Done + New Task buttons */
 .btn-group {
     display: flex;
     gap: 8px;
-    align-items: center;
 }
-
-
-/* --- 8e: Task List --- */
-.task-section {
+.btn-primary, .btn-outline {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #111111;
+}
+.btn-primary {
+    background: #111111;
+    color: #ffffff;
+}
+.btn-outline {
+    background: transparent;
+    color: #111111;
+}
+.task-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
-
-.task-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* A single task row */
 .task-card {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 16px 20px;
-    transition: transform var(--speed), box-shadow var(--speed), border-color var(--speed);
-    gap: 12px;
+    padding: 16px;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
 }
-.task-card:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-hover);
-    border-color: #a7f3d0;
-}
-
-/* Dim completed tasks */
 .task-card.completed {
-    opacity: 0.58;
-    background: var(--bg-subtle);
+    opacity: 0.5;
 }
-/* Strike through the title when done */
 .task-card.completed .task-title {
     text-decoration: line-through;
-    color: var(--text-muted);
 }
-
-/* Left part: checkbox + task info */
 .task-left {
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    flex: 1;
+    gap: 12px;
 }
-
-/* --- Custom Checkbox --- */
-/* We hide the default checkbox and style our own */
-.custom-checkbox {
-    position: relative;
-    display: inline-block;
-    width: 22px;
-    height: 22px;
+.task-checkbox {
+    margin-top: 4px;
     cursor: pointer;
-    margin-top: 3px;
-    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: #111111;
 }
-
-/* Hide the real checkbox input */
-.custom-checkbox input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    position: absolute;
-}
-
-/* Our custom box */
-.checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 22px;
-    width: 22px;
-    background: #fff;
-    border: 2px solid var(--border);
-    border-radius: 5px;
-    transition: all var(--speed);
-}
-
-/* When hovering the checkbox, show brand color */
-.custom-checkbox:hover input ~ .checkmark {
-    border-color: var(--brand);
-}
-
-/* When the checkbox IS checked, fill it green */
-.custom-checkbox input:checked ~ .checkmark {
-    background: var(--brand);
-    border-color: var(--brand);
-}
-
-/* Draw a white checkmark tick inside */
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-    left: 6px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-.custom-checkbox input:checked ~ .checkmark:after {
-    display: block;
-}
-
-/* The text content of the task */
 .task-details {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    flex: 1;
+    gap: 4px;
 }
 .task-title {
-    font-size: 0.98rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    line-height: 1.3;
+    font-size: 15px;
+    font-weight: 500;
 }
 .task-desc {
-    font-size: 0.85rem;
-    color: var(--text-body);
-    line-height: 1.4;
+    font-size: 13px;
+    color: #666666;
 }
-
-/* Row of small tags: category, priority, date */
 .task-meta {
     display: flex;
-    align-items: center;
-    gap: 7px;
-    flex-wrap: wrap;
-    margin-top: 3px;
+    gap: 8px;
+    font-size: 12px;
+    color: #888888;
+    margin-top: 4px;
 }
-
-/* Shared badge style */
-.badge {
-    padding: 3px 10px;
-    border-radius: var(--radius-full);
-    font-size: 0.72rem;
-    font-weight: 700;
-}
-
-/* Category badge (grey) */
-.category-badge {
-    background: #f0f9f4;
-    color: var(--text-body);
-    border: 1.5px solid var(--border);
-}
-
-/* Priority badge colors */
-.priority-high   { background: #fef2f2; color: #dc2626; border: 1.5px solid #fca5a5; }
-.priority-medium { background: #fffbeb; color: #d97706; border: 1.5px solid #fde68a; }
-.priority-low    { background: #f0fdf4; color: #16a34a; border: 1.5px solid #bbf7d0; }
-
-/* Small date text */
-.task-date {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-}
-
-/* Edit & Delete buttons on the right of each task */
 .task-actions {
     display: flex;
-    gap: 5px;
-    flex-shrink: 0;
+    gap: 8px;
 }
-
-/* Base style for edit / delete action buttons */
 .action-btn {
-    background: transparent;
-    border: 1.5px solid transparent;
-    color: var(--text-muted);
-    width: 34px;
-    height: 34px;
-    border-radius: var(--radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: #666666;
     cursor: pointer;
-    transition: all var(--speed);
-    font-size: 0.9rem;
 }
-
-/* Blue hover for edit button */
-.edit-btn:hover {
-    background: #eff6ff;
-    color: #3b82f6;
-    border-color: #bfdbfe;
+.action-btn:hover {
+    color: #111111;
 }
-
-/* Red hover for delete button */
-.delete-btn:hover {
-    background: #fef2f2;
-    color: var(--red);
-    border-color: #fca5a5;
-}
-
-
-/* --- 8f: Empty State (shown when no tasks) --- */
 .empty-state {
     text-align: center;
-    padding: 48px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    padding: 40px;
+    color: #666666;
+    font-size: 14px;
+    border: 1px dashed #eaeaea;
+    border-radius: 8px;
 }
-.empty-icon {
-    font-size: 2.8rem;
-    color: var(--brand);
-    margin-bottom: 4px;
-}
-.empty-state h3 {
-    font-size: 1.15rem;
-    color: var(--text-dark);
-}
-.empty-state p {
-    color: var(--text-muted);
-    font-size: 0.88rem;
-    max-width: 340px;
-}
-
-
-/* ----------------------------------------
-   STEP 9: Modal (Add / Edit Task Popup)
-   A modal is a popup that appears over the page.
-   ---------------------------------------- */
-
-/* The dark background overlay behind the modal */
 .modal-overlay {
-    position: fixed;   /* stays in place even if you scroll */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(26, 58, 42, 0.45);   /* dark green tint */
-    backdrop-filter: blur(3px);           /* blurs what's behind it */
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
-    align-items: center;
     justify-content: center;
-    z-index: 1000;   /* appear above everything else */
-    padding: 20px;
-}
-
-/* The white popup box */
-.modal-card {
-    width: 100%;
-    max-width: 480px;
-    padding: 26px;
-}
-
-/* Top row of modal: title + close button */
-.modal-header {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
-    padding-bottom: 14px;
-    border-bottom: 1.5px solid var(--border);
+}
+.modal-card {
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+.modal-header {
+    margin-bottom: 24px;
 }
 .modal-header h3 {
-    font-size: 1.15rem;
-    color: var(--text-dark);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
 }
-
-/* The X button to close the modal */
-.btn-close {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 5px;
-    transition: color var(--speed);
-    line-height: 1;
-}
-.btn-close:hover {
-    color: var(--red);
-}
-
-/* Form inside the modal */
-#task-form {
+.input-group {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 6px;
+    margin-bottom: 16px;
 }
-
-/* Two side-by-side inputs (Category + Priority) */
+.input-group label {
+    font-size: 13px;
+    font-weight: 500;
+}
+.input-group input, .input-group textarea, .input-group select {
+    padding: 10px;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+.input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+    border-color: #111111;
+}
 .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    display: flex;
+    gap: 16px;
 }
-
-/* Bottom row of modal: Cancel + Save buttons */
+.form-row .input-group {
+    flex: 1;
+}
 .modal-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 6px;
-    padding-top: 14px;
-    border-top: 1.5px solid var(--border);
+    gap: 8px;
+    margin-top: 24px;
 }
-
-
-/* ----------------------------------------
-   STEP 10: Toast Notifications
-   Small popup messages at the bottom-right corner.
-   They appear briefly then fade out.
-   ---------------------------------------- */
-
-/* Container holding all toasts */
 .toast-container {
     position: fixed;
-    bottom: 22px;
-    right: 22px;
+    bottom: 24px;
+    right: 24px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    z-index: 2000;   /* above the modal overlay */
 }
-
-/* A single toast message */
 .toast {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 12px 18px;
-    background: #ffffff;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-md);
-    color: var(--text-dark);
-    box-shadow: var(--shadow-hover);
-    font-size: 0.88rem;
-    font-weight: 500;
-    max-width: 320px;
-    /* Slide-in animation from the bottom */
-    animation: slideUp 0.25s ease forwards;
-}
-
-/* Icon colors for each type */
-.toast-success i { color: var(--green); }
-.toast-error   i { color: var(--red);   }
-.toast-info    i { color: #3b82f6;      }   /* blue */
-
-/* Fade-out when the toast is about to disappear */
-.toast.fade-out {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: 0.25s ease;
-}
-
-/* The slide-up animation definition */
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0);    }
-}
-
-
-/* ----------------------------------------
-   STEP 11: Responsive Design
-   On smaller screens (phones), stack things vertically.
-   @media means "apply these styles ONLY when the screen
-   is this wide or smaller".
-   ---------------------------------------- */
-@media (max-width: 640px) {
-    /* Stack banner vertically */
-    .safety-banner {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    /* Stack action bar vertically */
-    .action-bar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    /* Make search full width */
-    .search-box {
-        min-width: 100%;
-    }
-
-    /* Stack the Category + Priority selects */
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-
-    /* Stack buttons vertically */
-    .btn-group {
-        flex-direction: column;
-    }
-
-    /* Hide user info text on very small screens */
-    .user-info {
-        display: none;
-    }
+    background: #111111;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
 }
