@@ -1,27 +1,34 @@
 # SafetyNet
 
-Ek dum clean aur fast task manager. Bina kisi faltu shor ke, sirf kaam ki baat.
+SafetyNet is a lightweight browser task manager built with plain HTML, CSS, and JavaScript. It keeps the experience fast, minimal, and useful.
 
-Maine isko isliye banaya kyunki mujhe ek aisa task manager chahiye tha jo quick ho, load hone mein time na lagaye, aur jisme unnecessarily complex features na ho. Pure HTML, CSS, aur JS ka use kiya hai—no heavy frameworks, no bloated code.
+## What changed
+- Added working task filters and search for quick lookup.
+- Added due-soon highlighting and task sorting by due date.
+- Added an edit/create modal for task management.
+- Added a clear completed action and persistent local storage.
+- Added Google sign-in support for a smoother onboarding flow.
 
-## Live Demo
-Dekho kaisa chal raha hai: [SafetyNet Live](https://the-full-stack-safety-net-r69r.vercel.app/)
+## Features
+- Google sign-in onboarding.
+- Local browser storage for tasks and user context.
+- Filter tasks by All, Pending, or Completed.
+- Clear completed tasks in one click.
+- Automatically highlight tasks due soon.
+- Edit, delete, and complete tasks from the dashboard.
 
-## Kya Khaas Hai Isme?
-- Zero Distractions: Ek dum minimalist light theme. UI itna clean hai ki sirf tumhara kaam dikhega.
-- Google Sign-In: "Forgot Password" ka jhanjhat hi khatam. Seedha apne Google account se ek click mein login karo.
-- Fast & Local: Tumhara data tumhare browser ke localStorage mein save hota hai, toh app instantly load hoti hai.
-- Beginner Friendly Code: Codebase mein ek bhi comment nahi choda maine. Ekdum seedha aur aasan code likha hai taaki koi bhi beginner easily samajh sake.
-
-## Kaise Chalaye?
-
-1. Repo ko apne system mein clone karo:
+## Run locally
+1. Clone the repo:
    ```bash
    git clone https://github.com/AtulSharmx/The-Full-Stack-Safety-Net.git
    ```
-2. Code editor (jaise VS Code) mein open karo.
-3. `index.html` file par right click karke "Open with Live Server" par click karo.
-4. Bas, Google se sign in karo aur apne tasks add karna shuru kar do!
+2. Open the project in VS Code or your editor.
+3. Open `index.html` in the browser or use Live Server.
+4. Sign in with Google and start managing tasks.
 
-## Contributions
-Code ekdum open hai. Agar tumhe lagta hai ki koi naya minimal feature add hona chahiye, toh bindaas pull request bhej do.
+## Notes
+- Task data is stored in `localStorage`, so it persists in the same browser.
+- The app uses no frontend frameworks; it is built with pure web technologies.
+
+## Contribution
+If you'd like to add a feature or improve the design, send a pull request. This repo is meant for honest, incremental improvements.

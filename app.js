@@ -97,6 +97,21 @@ function renderDashboard() {
         return true;
     });
 
+    filteredTasks.sort((a, b) => {
+        if (a.completed !== b.completed) return a.completed ? 1 : -1;
+        if (a.dueDate && b.dueDate) {
+            const diff = new Date(a.dueDate) - new Date(b.dueDate);
+            if (diff !== 0) return diff;
+        } else if (a.dueDate) {
+            return -1;
+        } else if (b.dueDate) {
+            return 1;
+        }
+
+        const priorityValue = { High: 1, Medium: 2, Low: 3 };
+        return (priorityValue[a.priority] || 4) - (priorityValue[b.priority] || 4);
+    });
+
     const taskListEl = document.getElementById('task-list');
     const emptyStateEl = document.getElementById('empty-state');
     taskListEl.innerHTML = '';
@@ -106,8 +121,9 @@ function renderDashboard() {
     } else {
         emptyStateEl.classList.add('hidden');
         filteredTasks.forEach(task => {
+            const dueSoonClass = !task.completed && isDueSoon(task.dueDate) ? ' due-soon' : '';
             const card = document.createElement('div');
-            card.className = `task-card ${task.completed ? 'completed' : ''}`;
+            card.className = `task-card ${task.completed ? 'completed' : ''}${dueSoonClass}`;
             card.innerHTML = `
                 <div class="task-left">
                     <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTaskComplete('${task.id}')">
@@ -119,6 +135,7 @@ function renderDashboard() {
                             <span>${task.priority} Priority</span>
                             ${task.dueDate ? ` • <span>${task.dueDate}</span>` : ''}
                         </div>
+                        ${isDueSoon(task.dueDate) ? '<span class="due-soon-badge">Due soon</span>' : ''}
                     </div>
                 </div>
                 <div class="task-actions">
@@ -198,47 +215,74 @@ function deleteTask(id) {
     renderDashboard();
 }
 
-function clearCompletedTasks() {
-    let tasks = getUserTasks(currentUser.email);
-    tasks = tasks.filter(t => !t.completed);
-    saveUserTasks(currentUser.email, tasks);
-    renderDashboard();
-}
-
 function openTaskModal() {
     document.getElementById('modal-title').textContent = 'New Task';
-    document.getElementById('task-form').reset();
     document.getElementById('task-id').value = '';
+    document.getElementById('task-title-input').value = '';
+    document.getElementById('task-desc-input').value = '';
+    document.getElementById('task-category').value = 'Work';
+    document.getElementById('task-priority').value = 'Medium';
+    document.getElementById('task-due-date').value = '';
     document.getElementById('task-modal').classList.remove('hidden');
 }
 
 function closeTaskModal() {
+    document.getElementById('task-form').reset();
     document.getElementById('task-modal').classList.add('hidden');
 }
 
 function closeTaskModalOnOverlay(event) {
-    if (event.target.id === 'task-modal') closeTaskModal();
-}
-
-function setFilter(filter) {
-    currentFilter = filter;
-    document.querySelectorAll('.filter-chip').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-filter') === filter);
-    });
-    renderDashboard();
+    if (event.target.id === 'task-modal') {
+        closeTaskModal();
+    }
 }
 
 function filterTasks() {
     renderDashboard();
 }
 
+function setFilter(filter) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-chip').forEach(button => {
+        button.classList.toggle('active', button.dataset.filter === filter);
+    });
+    renderDashboard();
+}
+
+function clearCompletedTasks() {
+    const tasks = getUserTasks(currentUser.email).filter(task => !task.completed);
+    saveUserTasks(currentUser.email, tasks);
+    showToast('Completed tasks cleared');
+    renderDashboard();
+}
+
+function isDueSoon(dueDate) {
+    if (!dueDate) return false;
+    const today = new Date();
+    const due = new Date(dueDate + 'T23:59:59');
+    const diffMs = due - today;
+    return diffMs >= 0 && diffMs <= 3 * 24 * 60 * 60 * 1000;
+}
+
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 function showToast(message) {
-    const container = document.getElementById('toast-container');
+    const toastContainer = document.getElementById('toast-container');
     const toast = document.createElement('div');
     toast.className = 'toast';
     toast.textContent = message;
-    container.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+    toastContainer.appendChild(toast);
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        toast.addEventListener('transitionend', () => toast.remove());
+    }, 2500);
 }
 
 function escapeHtml(str) {

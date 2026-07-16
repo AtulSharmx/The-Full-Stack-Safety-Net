@@ -175,6 +175,20 @@ body {
 .task-card.completed .task-title {
     text-decoration: line-through;
 }
+.task-card.due-soon {
+    border-color: #f5c623;
+    background: #fffbea;
+}
+.due-soon-badge {
+    background: #f5c623;
+    color: #111111;
+    padding: 2px 8px;
+    font-size: 11px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 4px;
+}
 .task-left {
     display: flex;
     gap: 12px;
@@ -300,4 +314,8 @@ body {
     padding: 12px 20px;
     border-radius: 6px;
     font-size: 14px;
+    transition: opacity 0.2s ease;
+}
+.toast.fade-out {
+    opacity: 0;
 }
