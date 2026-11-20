@@ -1,13 +1,7 @@
 # SafetyNet
 
-SafetyNet is a lightweight browser task manager built with plain HTML, CSS, and JavaScript. It keeps the experience fast, minimal, and useful.
-
-## What changed
-- Added working task filters and search for quick lookup.
-- Added due-soon highlighting and task sorting by due date.
-- Added an edit/create modal for task management.
-- Added a clear completed action and persistent local storage.
-- Added Google sign-in support for a smoother onboarding flow.
+SafetyNet is a browser task manager built with plain HTML, CSS and JavaScript. Tasks live in
+`localStorage`, so it works offline and needs no backend.
 
 ## Features
 - Google sign-in onboarding.
@@ -30,5 +24,5 @@ SafetyNet is a lightweight browser task manager built with plain HTML, CSS, and 
 - Task data is stored in `localStorage`, so it persists in the same browser.
 - The app uses no frontend frameworks; it is built with pure web technologies.
 
-## Contribution
-If you'd like to add a feature or improve the design, send a pull request. This repo is meant for honest, incremental improvements.
+## Contributing
+Pull requests are welcome if you want to add a feature or improve the design.
