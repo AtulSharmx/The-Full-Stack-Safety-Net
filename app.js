@@ -1,6 +1,10 @@
 let currentUser = null;
 let currentFilter = 'all';
 
+// The sample task sits a couple of days out, so a new account does not open
+// on something that is already overdue.
+const DEFAULT_DUE_DATE = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
+
 const DEFAULT_TASKS = [
     { 
         id: 'task-1', 
@@ -8,7 +12,7 @@ const DEFAULT_TASKS = [
         description: 'Configure priority alerts for projects.',
         category: 'Work', 
         priority: 'High', 
-        dueDate: '2026-07-05', 
+        dueDate: DEFAULT_DUE_DATE, 
         completed: false, 
         createdAt: Date.now() 
     }
@@ -68,7 +72,9 @@ function showDashboard() {
 
 function getUserTasks(email) {
     const data = localStorage.getItem(`safetynet_tasks_${email.toLowerCase()}`);
-    return data ? JSON.parse(data) : DEFAULT_TASKS;
+    // DEFAULT_TASKS is shared module state and callers mutate the array they
+    // get back, so the fallback hands over copies rather than the originals.
+    return data ? JSON.parse(data) : DEFAULT_TASKS.map((task) => ({ ...task }));
 }
 
 function saveUserTasks(email, tasks) {
@@ -131,9 +137,9 @@ function renderDashboard() {
                         <span class="task-title">${escapeHtml(task.title)}</span>
                         ${task.description ? `<span class="task-desc">${escapeHtml(task.description)}</span>` : ''}
                         <div class="task-meta">
-                            <span>${task.category}</span> • 
-                            <span>${task.priority} Priority</span>
-                            ${task.dueDate ? ` • <span>${task.dueDate}</span>` : ''}
+                            <span>${escapeHtml(task.category)}</span> • 
+                            <span>${escapeHtml(task.priority)} Priority</span>
+                            ${task.dueDate ? ` • <span>${escapeHtml(task.dueDate)}</span>` : ''}
                         </div>
                         ${isDueSoon(task.dueDate) ? '<span class="due-soon-badge">Due soon</span>' : ''}
                     </div>
@@ -283,8 +289,4 @@ function showToast(message) {
         toast.classList.add('fade-out');
         toast.addEventListener('transitionend', () => toast.remove());
     }, 2500);
-}
-
-function escapeHtml(str) {
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
